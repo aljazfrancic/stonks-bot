@@ -1,0 +1,5 @@
+nextcord
+python-dotenv
+numpy
+matplotlib
+requests
