@@ -96,7 +96,7 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.gca().set_xticklabels(longreadable[tikz], rotation = 45, ha = "right")
     # other matplotlib stuff
     plt.gca().set_yticks(np.linspace(0, 1, 11))
-    plt.gca().set_ylim(mini, 1.1)
+    plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.grid(color = "#595959")
     plt.legend(coins, loc=3)
     plt.xlabel("time")
