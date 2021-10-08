@@ -1,2 +1,3 @@
-# stonks-bot
-much stonk such wow
+# usage #
+
+    !kekw <number of days>
