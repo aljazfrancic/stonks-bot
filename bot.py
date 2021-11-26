@@ -114,9 +114,9 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.close()
 
 async def call_print_graph(discord_channel, days):
-    coins = ["bitcoin", "ethereum", "monero", "chainlink", "sherpa", "snowball-token", "avalaunch", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "avalanche-2"] 
-    colors = ["ffffff", "9e9e9e", "ff8800", "009dff", "00ff08", "00ddff", "ffff00", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff" ,"ff0000"]
-    linestyle = [":", ":", ":", ":", "-", "-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-"]
+    coins = ["bitcoin", "ethereum", "monero", "chainlink", "sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "avalanche-2", "avalaunch"] 
+    colors = ["ffffff", "9e9e9e", "ff8800", "009dff", "00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "ff0000", "ffff00"]
+    linestyle = [":", ":", ":", ":", "-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-"]
     data = []
     timestamps = []
     longreadable = None
