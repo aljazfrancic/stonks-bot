@@ -118,7 +118,7 @@ async def call_print_graph(discord_channel, days):
     coins = ["sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "talecraft", "avalanche-2", "avalaunch", "bitcoin", "ethereum", "monero", "chainlink"] 
     colors = ["00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", "ff0000", "ffff00", "ffffff", "9e9e9e", "ff8800", "009dff"]
     linestyle = ["-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-", ":", ":", ":", ":"]
-    linewidth = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1, 1, 1]
+    linewidth = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
     data = []
     timestamps = []
     longreadable = None
