@@ -52,7 +52,7 @@ def get_coin_historic_prix_gecko(coin, days):
 # MATPLOTLIB PART #
 ###################
 
-async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, linestyle, discord_channel, days):
+async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, linestyle, linewidth, discord_channel, days):
     # threshold for number of datapoints for displaying avax price and showing dates on x axis labels
     thresh = 35
     # rounding
@@ -72,7 +72,8 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
             timestamps[i],
             normalized,
             color = "#" + colors[i],
-            linestyle = linestyle[i]
+            linestyle = linestyle[i],
+            linewidth = linewidth[i]
         )
         # if avax plot price
         if coins[i] == "avalanche-2":
@@ -98,7 +99,7 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     # other matplotlib stuff
     plt.gca().set_yticks(np.linspace(0, 1, 11))
     plt.gca().set_ylim(mini - 0.05, 1.05)
-    plt.grid(color = "#595959")
+    plt.grid(color = "#595959", linestyle = '--')
     plt.legend(coins, loc=3)
     plt.xlabel("time")
     plt.ylabel("$$$")
@@ -114,9 +115,10 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.close()
 
 async def call_print_graph(discord_channel, days):
-    coins = ["bitcoin", "ethereum", "monero", "chainlink", "sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "talecraft", "avalanche-2", "avalaunch"] 
-    colors = ["ffffff", "9e9e9e", "ff8800", "009dff", "00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", "ff0000", "ffff00"]
-    linestyle = [":", ":", ":", ":", "-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-"]
+    coins = ["sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "talecraft", "avalanche-2", "avalaunch", "bitcoin", "ethereum", "monero", "chainlink"] 
+    colors = ["00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", "ff0000", "ffff00", "ffffff", "9e9e9e", "ff8800", "009dff"]
+    linestyle = ["-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-", ":", ":", ":", ":"]
+    linewidth = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1, 1, 1]
     data = []
     timestamps = []
     longreadable = None
@@ -130,7 +132,7 @@ async def call_print_graph(discord_channel, days):
         # append one coin to data
         data.append(history)
         timestamps.append(ts)
-    await print_graph(coins, data, timestamps, longreadable, longstamp, colors, linestyle, discord_channel, days)
+    await print_graph(coins, data, timestamps, longreadable, longstamp, colors, linestyle, linewidth, discord_channel, days)
 
 
 ###############
