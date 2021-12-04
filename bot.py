@@ -121,7 +121,7 @@ async def print_all_graphs(discord_channel, days):
     linewidth = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
     title_addon = ""
     
-    call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
+    await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
     
 
 async def call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon):
