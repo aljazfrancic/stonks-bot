@@ -100,7 +100,7 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.gca().set_yticks(np.linspace(0, 1, 11))
     plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.grid(color = "#595959", linestyle = '--')
-    plt.legend(coins, bbox_to_anchor = (1.08, 1), loc = "upper left")
+    plt.legend(coins, bbox_to_anchor = (1.04, 1), loc = "upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
     plt.title(title_addon + ": " + ("last day " if days == 1 else days + " days") + " crypto price comparison")
