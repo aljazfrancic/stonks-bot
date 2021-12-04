@@ -103,7 +103,7 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.legend(coins, bbox_to_anchor = (1.04, 1), loc = "upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
-    plt.title(title_addon + ": " + ("last day " if days == 1 else days + " days") + " crypto price comparison")
+    plt.title(title_addon + ": " + ("last day " if days_num == 1 else days + " days") + " crypto price comparison")
     
     # print image ot discord channel
     buf = io.BytesIO()
@@ -119,7 +119,7 @@ async def print_all_graphs(discord_channel, days):
     colors = ["00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", "ff0000", "ffff00", "ffffff", "9e9e9e", "ff8800", "009dff"]
     linestyle = ["-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-", ":", ":", ":", ":"]
     linewidth = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
-    title_addon = ""
+    title_addon = "launchpads"
     
     await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
     
