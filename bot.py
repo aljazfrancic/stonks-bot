@@ -165,10 +165,10 @@ async def call_print_graph(discord_channel, days, coins, colors, linestyle, line
     for i, coin in enumerate(coins):
         history, datescoin, ts = get_coin_historic_prix_gecko(coin, days)
         # find oldest coin
-        if age < ts[0]:
+        if age < ts[-1]:
             longreadable = datescoin
             longstamp = ts
-            age = ts[0]
+            age = ts[-1]
         # append one coin to data
         data.append(history)
         timestamps.append(ts)
