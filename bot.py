@@ -103,7 +103,7 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.legend(coins, bbox_to_anchor = (1.08, 1), loc = "upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
-    plt.title(title_addon + ": " + (days == 1 ? "last day " : days + " days") + " crypto price comparison")
+    plt.title(title_addon + ": " + ("last day " if days == 1 else days + " days") + " crypto price comparison")
     
     # print image ot discord channel
     buf = io.BytesIO()
