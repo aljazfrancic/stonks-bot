@@ -124,7 +124,7 @@ async def print_all_graphs(discord_channel, days):
     
     coins = ["avalanche-2", "avalaunch", "roco-finance", "lydia-finance", "penguin-finance", "avaware", "yay-games"] 
     colors = ["ff0000", "ffff00", "f55307", "9c5bfc", "e314a8", "1864d6", "00ff00"]
-    linestyle = ["-", "-", "--", "--", "-", "-", "-"], 
+    linestyle = ["-", "-", "--", "--", "-", "-", "-"]
     linewidth = [2, 2, 1, 1, 1, 1, 1]
     title_addon = "Launchpads"
     
