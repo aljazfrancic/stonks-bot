@@ -161,7 +161,7 @@ async def call_print_graph(discord_channel, days, coins, colors, linestyle, line
     timestamps = []
     longreadable = None
     longstamp = None
-    age = np.inf
+    age = np.Inf
     for i, coin in enumerate(coins):
         history, datescoin, ts = get_coin_historic_prix_gecko(coin, days)
         # find oldest coin
