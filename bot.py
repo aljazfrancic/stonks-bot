@@ -115,13 +115,44 @@ async def print_graph(coins, data, timestamps, longreadable, longstamp, colors, 
     plt.close()
 
 async def print_all_graphs(discord_channel, days):
-    coins = ["sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", "penguin-finance", "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", "roco-finance", "oh-finance", "talecraft", "avalanche-2", "avalaunch", "bitcoin", "ethereum", "monero", "chainlink"] 
-    colors = ["00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", "ff0000", "ffff00", "ffffff", "9e9e9e", "ff8800", "009dff"]
-    linestyle = ["-", "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-", ":", ":", ":", ":"]
+    coins = ["sherpa", "snowball-token", "yield-yak", "baguette", "pangolin", "yay-games", "elk-finance", "lydia-finance", , "gondola-finance", "benqi", "kalao", "avme", "spore", "hurricaneswap-token", , "oh-finance", "talecraft", , , "bitcoin", "ethereum", "monero", "chainlink"] 
+    colors = ["00ff08", "00ddff", "277d3e", "fffa96", "fc9505", "78aeff", "785211", "ff00c8", "006157", "808080", "e6d439", "678569", "ffbdfb", "c5a6ff", "ad6ff7", "c9552a", "c9f9ff", "14f5b1", ,  "ffffff", "9e9e9e", "ff8800", "009dff"]
+    linestyle = [, "-", "-", "-", "-", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-.", "-", "-", "-", "-", "-", "-", ":", ":", ":", ":"]
     linewidth = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
     title_addon = "launchpads"
     
+    
+    coins = ["avalanche-2", "avalaunch", "roco-finance", "lydia-finance", "penguin-finance", "avaware", "yay-games"] 
+    colors = ["ff0000", "ffff00", "f55307", "9c5bfc", "e314a8", "1864d6", "00ff00"]
+    linestyle = ["-", "-", "--", "--", "-", "-", "-"], 
+    linewidth = [2, 2, 1, 1, 1, 1, 1]
+    title_addon = "Launchpads"
+    
     await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
+    
+    coins = [] 
+    colors = []
+    linestyle = []
+    linewidth = []
+    title_addon = "Defi"
+    
+    #await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
+    
+    coins = [] 
+    colors = []
+    linestyle = []
+    linewidth = []
+    title_addon = "Game-Fi"
+    
+    #await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
+    
+    coins = [] 
+    colors = []
+    linestyle = []
+    linewidth = []
+    title_addon = "Gems #1"
+    
+    #await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
     
 
 async def call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon):
