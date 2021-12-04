@@ -169,6 +169,7 @@ async def call_print_graph(discord_channel, days, coins, colors, linestyle, line
             longreadable = datescoin
             longstamp = ts
             age = ts.shape[0]
+            print(ts.shape[0])
         # append one coin to data
         data.append(history)
         timestamps.append(ts)
