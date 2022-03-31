@@ -46,7 +46,6 @@ def get_coin_historic_prix_gecko(coin, days):
         readable_dates.append(datetime.datetime.utcfromtimestamp(int(date)/1000).strftime('%Y-%m-%d %H:%M:%S') + " UTC")
     readable = np.array(readable_dates)
     return prixes, readable, dates
-    
 
 ###################
 # MATPLOTLIB PART #
@@ -162,7 +161,6 @@ async def print_all_graphs(discord_channel, days):
     title_addon = "Top coins"
     
     await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
-    
 
 async def call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon):
     data = []
@@ -181,7 +179,6 @@ async def call_print_graph(discord_channel, days, coins, colors, linestyle, line
         data.append(history)
         timestamps.append(ts)
     await print_graph(coins, data, timestamps, longreadable, longstamp, colors, linestyle, linewidth, discord_channel, days, title_addon)
-
 
 ###############
 # DICORD PART #
