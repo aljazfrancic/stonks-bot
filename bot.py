@@ -139,10 +139,10 @@ async def print_all_graphs(discord_channel, days):
     
     await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
     
-    coins = ["baguette", "snowbank", "hoopoe", "gondola-finance", "sherpa"]
-    colors = ["ffdb6e", "858585", "ffbf00", "ff0000", "00ff00"]
-    linestyle = ["-", "-", "-", "--", "-"]
-    linewidth = [2, 2, 2, 2, 2]
+    coins = ["avalanche-2", "baguette", "snowbank", "hoopoe", "gondola-finance", "sherpa"]
+    colors = ["ff0000", "ffdb6e", "858585", "ffbf00", "ff0000", "00ff00"]
+    linestyle = ["-", "-", "-", "-", "--", "-"]
+    linewidth = [2, 2, 2, 2, 2, 2]
     title_addon = "Gems #1"
     
     await call_print_graph(discord_channel, days, coins, colors, linestyle, linewidth, title_addon)
