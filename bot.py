@@ -156,7 +156,7 @@ async def print_all_graphs(discord_channel, days):
     
     coins = ["shiba-inu", "dogecoin", "polkadot", "cardano", "ripple", "binancecoin", "solana", "avalanche-2", "bitcoin", "ethereum", "monero"]
     colors = ["f58b00", "f0e19e", "e60bba", "2240e6", "fffef0", "f5dd42", "429ef5", "ff0000", "ffffff", "9e9e9e", "ff8800"]
-    linestyle = ["-", "-", "--", "--", "--", "--", "--", "-",":", ":", ":"]
+    linestyle = ["-", "-", "--", "--", "--", "--", "--", "-","-", "-", "-"]
     linewidth = [1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2]
     title_addon = "Top coins"
     
