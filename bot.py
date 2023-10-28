@@ -5,6 +5,7 @@ import json
 import urllib3
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as pe
 import discord
 from dotenv import load_dotenv
 
@@ -19,7 +20,7 @@ plt.style.use("dark_background")
 
 def do_req(url):
     http = urllib3.PoolManager()
-    response = http.request('GET', url)
+    response = http.request("GET", url)
     return json.loads(response.data)
 
 
@@ -28,96 +29,94 @@ def do_req(url):
 ##################
 
 # get historical data for one coin
-def get_coin_historic_prix_gecko(coin, days):
+def get_coin_historic_price_gecko(coin, days):
     print(coin)
-    data = do_req("https://api.coingecko.com/api/v3/coins/" + coin + "/market_chart?vs_currency=usd&days=" + str(days))[
+    data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={str(days)}")[
         "prices"]
-    data_arr = np.flip(np.array(data), 0)
-    prixes = data_arr[:, 1]
-    dates = data_arr[:, 0]
+    data_array = np.array(data)
+    prices = data_array[:, 1]
+    timestamps = data_array[:, 0]
     readable_dates = []
-    for date in dates:
+    for date in timestamps:
         readable_dates.append(
-            datetime.datetime.fromtimestamp(int(date) / 1000, datetime.timezone.utc).strftime(
-                '%Y-%m-%d %H:%M:%S') + " UTC")
-    readable = np.array(readable_dates)
-    return prixes, readable, dates
+            f"{datetime.datetime.fromtimestamp(
+                int(date) / 1000,
+                datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")} UTC")
+    readable_dates = np.array(readable_dates)
+    return prices, readable_dates, timestamps
 
 
 ###################
 # MATPLOTLIB PART #
 ###################
 
-async def print_graph(chan, days, coins, colors, linestyle, linewidth, title_addon):
-    data = []
-    timestamps = []
-    longreadable = None
-    longstamp = None
+async def print_graph(chan, days, coins):
+    coins_prices = []
+    coins_timestamps = []
+    oldest_readable_date = None
+    oldest_timestamps = None
     age = np.Inf
-    for i, coin in enumerate(coins):
-        history, datescoin, ts = get_coin_historic_prix_gecko(coin, days)
+    for coin in coins:
+        prices, readable_dates, timestamps = get_coin_historic_price_gecko(coin, days)
         # find the oldest coin
-        if age > ts[-1]:
-            longreadable = datescoin
-            longstamp = ts
-            age = ts[-1]
+        print(timestamps[0])
+        print(timestamps[-1])
+        if age > timestamps[0]:
+            oldest_readable_date = readable_dates
+            oldest_timestamps = timestamps
+            age = timestamps[0]
         # append one coin to data
-        data.append(history)
-        timestamps.append(ts)
+        coins_prices.append(prices)
+        coins_timestamps.append(timestamps)
 
-    # threshold for number of datapoints for displaying avax price and showing dates on x-axis labels
-    thresh = 35
-    # rounding
-    rounding = 1
+    # threshold for number of datapoints for displaying first coin's price and showing dates on x-axis labels
+    threshold = 35
     # plot size
     plt.figure(figsize=(15, 6))
     # define ticks (hacky)
-    days_num = longstamp.shape[0] if days == "max" else int(days)
-    tikz = np.int32(np.linspace(0, longstamp.shape[0] - 1,
-                                25 if days_num == 1 else (thresh if days_num > thresh else (days_num + 1))))
+    days_num = oldest_timestamps.shape[0] if days == "max" else int(days)
+    ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1,
+                                 25 if days_num == 1 else (threshold if days_num > threshold else (days_num + 1))))
     mini = 1
-    # for each currency in data
-    for i, d in enumerate(data):
+    # for each coin in data
+    for i, d in enumerate(coins_prices):
         # normalize
         normalized = d / d.max()
-        # plot line for one currency using defined color, linestyle, etc.
-        plt.plot(
-            timestamps[i],
-            normalized,
-            color="#" + colors[i],
-            linestyle=linestyle[i],
-            linewidth=linewidth[i]
-        )
-        # if avax plot price
-        if coins[i] == "avalanche-2":
-            tikzava = np.int32(np.linspace(0, timestamps[i].shape[0] - 1,
-                                           25 if days_num == 1 else (thresh if days_num > thresh else (days_num + 1))))
-            if timestamps[i].shape[0] * 2 > longstamp.shape[0]:
-                for x, y, z in zip(timestamps[i][tikzava], np.array(normalized)[tikzava], np.array(d)[tikzava]):
-                    plt.text(
-                        x,
-                        y,
-                        str(round(z, rounding)),
-                        color="white",
-                        weight="bold",
-                        size=10,
-                        rotation=90,
-                    )
+        # plot line for one coin
+        plt.plot(coins_timestamps[i], normalized)
+        # for first coin plot price text
+        if i == 0:
+            ticks_first_coin = np.int32(np.linspace(0, coins_timestamps[i].shape[0] - 1,
+                                                    25 if days_num == 1 else (
+                                                        threshold if days_num > threshold else (days_num + 1))))
+            for x, y, z in zip(coins_timestamps[i][ticks_first_coin], np.array(normalized)[ticks_first_coin],
+                               np.array(d)[ticks_first_coin]):
+                plt.text(
+                    x,
+                    y,
+                    f"{round(z)}",
+                    color="white",
+                    size=8,
+                    rotation=90,
+                    path_effects=[pe.withStroke(linewidth=2, foreground="black")]
+                )
         # find global minimum
         norm_mini = normalized.min()
         if norm_mini < mini:
             mini = norm_mini
-    # print full date instead of number of points in the past
-    plt.gca().set_xticks(longstamp[tikz])
-    plt.gca().set_xticklabels(longreadable[tikz], rotation=45, ha="right")
+    if mini > 0.9:
+        mini = 0.9
+    # print full date
+    plt.gca().set_xticks(oldest_timestamps[ticks])
+    plt.gca().set_xticklabels(oldest_readable_date[ticks], rotation=45, ha="right")
     # other matplotlib stuff
     plt.gca().set_yticks(np.linspace(0, 1, 11))
     plt.gca().set_ylim(mini - 0.05, 1.05)
-    plt.grid(color="#595959", linestyle='--')
-    plt.legend(coins, bbox_to_anchor=(1.04, 1), loc="upper left")
+    plt.grid(color="#595959", linestyle="--")
+    plt.legend(coins, bbox_to_anchor=(1, 1), loc="upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
-    plt.title(title_addon + ": " + ("last day" if days_num == 1 else str(days) + " days") + " crypto price comparison")
+    plt.title(f"{("last day" if days_num == 1 else f"{days} days")}" + " crypto price comparison")
 
     # print image to discord channel
     buf = io.BytesIO()
@@ -128,17 +127,6 @@ async def print_graph(chan, days, coins, colors, linestyle, linewidth, title_add
 
     plt.close()
 
-
-###############
-# LOCAL DEBUG #
-###############
-
-days = 365
-coins = ["bitcoin", "ethereum"]  # , "monero", "avalanche-2", "avalaunch"
-colors = ["ffffff", "9e9e9e", "ff8800", "ff0000", "ffff00"]
-linestyle = [":", ":", ":", "-", "-"]
-linewidth = [2, 2, 2, 2, 2]
-title_addon = "old coins"
 
 ################
 # DISCORD PART #
@@ -154,12 +142,16 @@ async def on_message(message):
     command_prefix = "!kekw"
     if message.content[: len(command_prefix)] == command_prefix:
         await message.channel.send("Roger, roger!")
-        await print_graph(message.channel, days, coins, colors, linestyle, linewidth, title_addon)
+        await print_graph(message.channel, 1, ["bitcoin", "ethereum", "monero"])
+        await print_graph(message.channel, 7, ["bitcoin", "ethereum", "monero"])
+        await print_graph(message.channel, 365, ["bitcoin", "ethereum", "monero"])
+        await print_graph(message.channel, "max", ["bitcoin", "ethereum", "monero"])
+        #await print_graph(message.channel, "max", ["monero", "bitcoin", "ethereum"])
 
 
 @client.event
 async def on_ready():
-    print(f'{client.user} reporting for duty!')
+    print(f"{client.user} reporting for duty!")
 
 
 secret = os.getenv("DISCORD_TOKEN")
