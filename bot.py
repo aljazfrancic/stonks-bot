@@ -39,9 +39,8 @@ def get_coin_historic_price_gecko(coin, days):
     readable_dates = []
     for date in timestamps:
         readable_dates.append(
-            f"{datetime.datetime.fromtimestamp(
-                int(date) / 1000,
-                datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")} UTC")
+            f"{datetime.datetime.fromtimestamp(int(date) /
+                                               1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
     readable_dates = np.array(readable_dates)
     return prices, readable_dates, timestamps
 
@@ -116,7 +115,7 @@ async def print_graph(chan, days, coins):
     plt.legend(coins, bbox_to_anchor=(1, 1), loc="upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
-    plt.title(f"{("last day" if days_num == 1 else f"{days} days")}" + " crypto price comparison")
+    plt.title(f"{('last day' if days_num == 1 else f'{days} days')}" + " crypto price comparison")
 
     # print image to discord channel
     buf = io.BytesIO()
@@ -146,7 +145,7 @@ async def on_message(message):
         await print_graph(message.channel, 7, ["bitcoin", "ethereum", "monero"])
         await print_graph(message.channel, 365, ["bitcoin", "ethereum", "monero"])
         await print_graph(message.channel, "max", ["bitcoin", "ethereum", "monero"])
-        #await print_graph(message.channel, "max", ["monero", "bitcoin", "ethereum"])
+        # await print_graph(message.channel, "max", ["monero", "bitcoin", "ethereum"])
 
 
 @client.event
