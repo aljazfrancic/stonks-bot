@@ -17,7 +17,7 @@ Default settings with user-defined number of days:
 
     !kekw <number of days or max>
 
-for example
+for example:
 
     !kekw 200
 
