@@ -65,10 +65,12 @@ async def print_graph(chan, days, coins):
         coins_prices.append(prices)
         coins_timestamps.append(timestamps)
 
-    # threshold for number of datapoints for displaying first coin's price and showing dates on x-axis labels
-    threshold = 35
     # plot size
     plt.figure(figsize=(15, 6))
+
+    # threshold for number of datapoints for displaying first coin's price and showing dates on x-axis labels
+    threshold = 35
+
     # define ticks (hacky)
     days_num = oldest_timestamps.shape[0] if days == "max" else int(days)
     ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1,
@@ -105,9 +107,24 @@ async def print_graph(chan, days, coins):
     # print full date
     plt.gca().set_xticks(oldest_timestamps[ticks])
     plt.gca().set_xticklabels(oldest_readable_date[ticks], rotation=45, ha="right")
+    # show bitcoin halvings
+    if "bitcoin" in coins:
+        for txt, x in zip(["2nd halving", "3rd halving"], [1468082773000, 1589225023000]):
+            if oldest_timestamps[0] <= x <= oldest_timestamps[-1]:
+                plt.axvline(x=x, label="_nolegend_")
+                plt.text(
+                    x,
+                    0.85,
+                    txt,
+                    color="white",
+                    size=8,
+                    rotation=90,
+                    path_effects=[pe.withStroke(linewidth=2, foreground="black")]
+                )
     # other matplotlib stuff
     plt.gca().set_yticks(np.linspace(0, 1, 11))
     plt.gca().set_ylim(mini - 0.05, 1.05)
+    plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
     plt.grid(color="#595959", linestyle="--")
     plt.legend(coins, bbox_to_anchor=(1, 1), loc="upper left")
     plt.xlabel("time")
@@ -138,11 +155,10 @@ async def on_message(message):
     command_prefix = "!kekw"
     if message.content[: len(command_prefix)] == command_prefix:
         await message.channel.send("Roger, roger!")
-        await print_graph(message.channel, 1, ["bitcoin", "ethereum", "monero"])
-        await print_graph(message.channel, 7, ["bitcoin", "ethereum", "monero"])
-        await print_graph(message.channel, 365, ["bitcoin", "ethereum", "monero"])
+        # await print_graph(message.channel, 7, ["bitcoin", "ethereum", "monero"])
+        # await print_graph(message.channel, 365, ["bitcoin", "ethereum", "monero"])
         await print_graph(message.channel, "max", ["bitcoin", "ethereum", "monero"])
-        # await print_graph(message.channel, "max", ["monero", "bitcoin", "ethereum"])
+        await print_graph(message.channel, 1, ["bitcoin", "ethereum", "monero"])
 
 
 @client.event
