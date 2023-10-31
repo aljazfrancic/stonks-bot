@@ -31,7 +31,7 @@ def do_req(url):
 # get historical data for one coin
 def get_coin_historic_price_gecko(coin, days):
     print(coin)
-    data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={str(days)}")[
+    data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}")[
         "prices"]
     data_array = np.array(data)
     prices = data_array[:, 1]
@@ -152,13 +152,21 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_message(message):
+    if message.author == client.user:
+        return
+
     command_prefix = "!kekw"
-    if message.content[: len(command_prefix)] == command_prefix:
+    default_coins = ["bitcoin", "ethereum", "monero"]
+    command_split = message.content.split()
+    print(command_split)
+    if command_split[0] == command_prefix:
         await message.channel.send("Roger, roger!")
-        # await print_graph(message.channel, 7, ["bitcoin", "ethereum", "monero"])
-        # await print_graph(message.channel, 365, ["bitcoin", "ethereum", "monero"])
-        await print_graph(message.channel, "max", ["bitcoin", "ethereum", "monero"])
-        await print_graph(message.channel, 1, ["bitcoin", "ethereum", "monero"])
+        if len(command_split) == 1:
+            await print_graph(message.channel, "max", default_coins)
+        elif len(command_split) == 2:
+            await print_graph(message.channel, command_split[1], default_coins)
+        else:
+            await print_graph(message.channel, command_split[1], command_split[2:])
 
 
 @client.event
