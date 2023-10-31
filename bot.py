@@ -39,8 +39,7 @@ def get_coin_historic_price_gecko(coin, days):
     readable_dates = []
     for date in timestamps:
         readable_dates.append(
-            f"{datetime.datetime.fromtimestamp(int(date) /
-                                               1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
+            f"{datetime.datetime.fromtimestamp(int(date) / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
     readable_dates = np.array(readable_dates)
     return prices, readable_dates, timestamps
 
