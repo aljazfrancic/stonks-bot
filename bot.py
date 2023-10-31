@@ -57,8 +57,6 @@ async def print_graph(chan, days, coins):
     for coin in coins:
         prices, readable_dates, timestamps = get_coin_historic_price_gecko(coin, days)
         # find the oldest coin
-        print(timestamps[0])
-        print(timestamps[-1])
         if age > timestamps[0]:
             oldest_readable_date = readable_dates
             oldest_timestamps = timestamps
