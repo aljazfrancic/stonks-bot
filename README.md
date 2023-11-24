@@ -2,7 +2,7 @@
 
 The purpose of this Discord bot is to pull the prices for user-defined coins from CoinGecko for a user-defined number of last days and display them in a plot in a relative manner.
 The bot will also display prices for the first coin on the list.
-Bitcoin halvings inside the CoinGecko interval will also be shows as white vertical lines in case bitcoin is on the list.
+Bitcoin halvings inside the CoinGecko interval will also be shown as white vertical lines in case bitcoin is on the list.
 
 # Usage #
 
