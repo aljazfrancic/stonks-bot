@@ -31,15 +31,18 @@ def do_req(url):
 # get historical data for one coin
 def get_coin_historic_price_gecko(coin, days):
     print(coin)
-    data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}")[
-        "prices"]
+    try:
+        data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}")[
+            "prices"]
+    except Exception:
+        raise Exception(f"Couldn't get prices for {coin}!")
     data_array = np.array(data)
     prices = data_array[:, 1]
     timestamps = data_array[:, 0]
     readable_dates = []
     for date in timestamps:
         readable_dates.append(
-            f"{datetime.datetime.fromtimestamp(int(date) / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
+            f"{datetime.datetime.fromtimestamp(int(date) / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC")
     readable_dates = np.array(readable_dates)
     return prices, readable_dates, timestamps
 
@@ -126,7 +129,7 @@ async def print_graph(chan, days, coins):
     plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
     plt.grid(color="#595959", linestyle="--")
-    plt.legend(coins, bbox_to_anchor=(1, 1), loc="upper left")
+    plt.legend(coins, bbox_to_anchor=(1.02, 1), loc="upper left")
     plt.xlabel("time")
     plt.ylabel("$$$")
     plt.title(f"{('last day' if days_num == 1 else f'{days} days')}" + " crypto price comparison")
@@ -161,12 +164,16 @@ async def on_message(message):
     print(command_split)
     if command_split[0] == command_prefix:
         await message.channel.send("Roger, roger!")
-        if len(command_split) == 1:
-            await print_graph(message.channel, "max", default_coins)
-        elif len(command_split) == 2:
-            await print_graph(message.channel, command_split[1], default_coins)
-        else:
-            await print_graph(message.channel, command_split[1], command_split[2:])
+        try:
+            if len(command_split) == 1:
+                await print_graph(message.channel, "max", default_coins)
+            elif len(command_split) == 2:
+                await print_graph(message.channel, command_split[1], default_coins)
+            else:
+                await print_graph(message.channel, command_split[1], command_split[2:])
+        except Exception as e:
+            print(e)
+            await message.channel.send(e)
 
 
 @client.event

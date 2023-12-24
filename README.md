@@ -11,7 +11,7 @@ Default settings (maximum number of days available on CoinGecko, using coins bit
     !kekw
 
 will produce something like:
-<img src="https://cdn.discordapp.com/attachments/892845299599564800/1168988757240852540/image.png">
+<img src="https://media.discordapp.net/attachments/804107481051431013/1188499681760784424/image.png">
 
 Default settings with user-defined number of days:
 
@@ -22,7 +22,7 @@ for example:
     !kekw 200
 
 will produce something like:
-<img src="https://cdn.discordapp.com/attachments/892845299599564800/1168990318335643648/image.png">
+<img src="https://media.discordapp.net/attachments/804107481051431013/1188499937462329344/image.png">
 
 Custom input:
 
@@ -33,7 +33,7 @@ for example:
     !kekw 365 avalanche-2 chainlink monero bitcoin
 
 will produce something like:
-<img src="https://cdn.discordapp.com/attachments/892845299599564800/1168990006120022066/image.png">
+<img src="https://media.discordapp.net/attachments/804107481051431013/1188500389864165386/image.png">
 
 # Warning #
 
