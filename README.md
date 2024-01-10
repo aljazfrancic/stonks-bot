@@ -6,7 +6,7 @@ Bitcoin halvings inside the CoinGecko interval will also be shown as white verti
 
 # Usage #
 
-To use the bot, send it a direct message on Discord or post on any channel the bot has access to on a Discord server that the bot is in that conforms to the following guidelines.
+To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
 Default settings (maximum number of days available on CoinGecko, using coins bitcoin, ethereum and monero):
 
