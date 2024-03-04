@@ -125,13 +125,15 @@ async def print_graph(chan, days, coins):
                     path_effects=[pe.withStroke(linewidth=2, foreground="black")]
                 )
     # other matplotlib stuff
-    plt.gca().set_yticks(np.linspace(0, 1, 11))
+    price_ticks = np.linspace(0, 1, 11)
+    plt.gca().set_yticks(price_ticks)
+    plt.gca().set_yticklabels((price_ticks * 100).astype(int))
     plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
     plt.grid(color="#595959", linestyle="--")
     plt.legend(coins, bbox_to_anchor=(1.02, 1), loc="upper left")
     plt.xlabel("time")
-    plt.ylabel("$$$")
+    plt.ylabel("$$$ %")
     plt.title(f"{('last day' if days_num == 1 else f'{days} days')}" + " crypto price comparison")
 
     # print image to discord channel
