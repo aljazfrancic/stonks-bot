@@ -40,6 +40,6 @@ will produce something like:
 
 # TODO #
 
-* [ ] Automatic deployment to AWS EC via GitHub Actions
+* [ ] Automatic deployment to AWS EC2 via GitHub Actions
 * [ ] Add stocks + ETFs
 * [ ] Overall code quality improvements
