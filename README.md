@@ -40,6 +40,7 @@ will produce something like:
 
 # TODO #
 
+* [ ] Allow the script to be easily run locally (without Discord integration)
 * [ ] Automatic deployment to AWS EC2 via GitHub Actions
 * [ ] Add stocks + ETFs
 * [ ] Overall code quality improvements
