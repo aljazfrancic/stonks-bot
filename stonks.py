@@ -34,7 +34,7 @@ def do_req(url):
 def get_coin_historic_price_gecko(coin, days, key):
     print(coin)
     data = do_req(
-        f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}?x_cg_pro_api_key={key}")
+        f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}&x_cg_api_key={key}")
     data_array = np.array(data["prices"])
 
     prices = data_array[:, 1]
