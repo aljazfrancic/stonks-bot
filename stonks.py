@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import json
+import os
 import sys
 import urllib3
 import numpy as np
@@ -30,9 +31,10 @@ def do_req(url):
 ##################
 
 # get historical data for one coin
-def get_coin_historic_price_gecko(coin, days):
+def get_coin_historic_price_gecko(coin, days, key):
     print(coin)
-    data = do_req(f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}")
+    data = do_req(
+        f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}?x_cg_pro_api_key={key}")
     data_array = np.array(data["prices"])
 
     prices = data_array[:, 1]
@@ -56,8 +58,9 @@ async def get_fig(days, coins):
     oldest_readable_date = None
     oldest_timestamps = None
     age = np.inf
+    key = os.getenv("COIN_GECKO")
     for coin in coins:
-        prices, readable_dates, timestamps = get_coin_historic_price_gecko(coin, days)
+        prices, readable_dates, timestamps = get_coin_historic_price_gecko(coin, days, key)
         # find the oldest coin
         if age > timestamps[0]:
             oldest_readable_date = readable_dates
@@ -125,8 +128,7 @@ async def get_fig(days, coins):
     return fig
 
 
-# for running the script locally
-if __name__ == "__main__":
+def main(save):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
@@ -140,7 +142,14 @@ if __name__ == "__main__":
     try:
         loop.run_until_complete(task)
         args = sys.argv[1:]
-        plt.savefig("pics/" + command_prefix + (" " if len(args) > 0 else "") + " ".join(args) + ".png")
-        plt.show(block=True)
+        if save:
+            plt.savefig("pics/" + command_prefix + ("_" if len(args) > 0 else "") + "_".join(args) + ".png")
+        else:
+            plt.show(block=True)
     except Exception as e:
         print(e.__class__.__name__)
+
+
+# for running the script locally
+if __name__ == "__main__":
+    main(save=False)

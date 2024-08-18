@@ -1,0 +1,30 @@
+name: Update pics used in README.md
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+    - cron: "0 * * * *"
+jobs:
+  update-pics:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Update pics
+        run: |
+          python github_actions.py
+          python github_actions.py 200
+          python github_actions.py 365 avalanche-2 chainlink monero bitcoin ethereum
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
