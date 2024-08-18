@@ -22,7 +22,8 @@ jobs:
       - name: Update pics
         run: |
           python github_actions.py
-          python github_actions.py 200
+          python github_actions.py 1
+          python github_actions.py 14
           python github_actions.py 365 avalanche-2 chainlink monero bitcoin ethereum
       - name: Commit & Push changes
         uses: actions-js/push@master

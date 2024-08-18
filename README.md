@@ -23,10 +23,15 @@ Default settings with user-defined number of days:
 ```
 for example:
 ```
-!stonks 200
+!stonks 1
 ```
 will produce something like:
-![example 2](pics/!stonks_200.png)
+![example 2](pics/!stonks_1.png)
+```
+!stonks 14
+```
+will produce something like:
+![example 3](pics/!stonks_14.png)
 
 Custom input:
 ```
@@ -37,7 +42,7 @@ for example:
 !stonks 365 avalanche-2 chainlink monero bitcoin ethereum
 ```
 will produce something like:
-![example 3](pics/!stonks_365_avalanche-2_chainlink_monero_bitcoin_ethereum.png)
+![example 4](pics/!stonks_365_avalanche-2_chainlink_monero_bitcoin_ethereum.png)
 
 # Installation #
 
@@ -55,7 +60,7 @@ will produce something like:
 > [!NOTE]
 > All the commands listed under Usage will work if you substitute `!stonks` with `python stonks.py`, for example
 > ```
-> python stonks.py 365 avalanche-2 chainlink monero bitcoin
+> python stonks.py 365 avalanche-2 chainlink monero bitcoin ethereum
 > ```
 
 # TODO #
