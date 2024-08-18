@@ -1,4 +1,5 @@
 from stonks import get_fig, default_coins, command_prefix
+import matplotlib.pyplot as plt
 import discord
 import os
 import io
@@ -34,6 +35,7 @@ async def on_message(message):
             buf.seek(0)
             await message.channel.send(file=discord.File(buf, "stonks.png"))
             buf.close()
+            plt.close("all")
 
         except Exception as e:
             print(e.__class__.__name__)
