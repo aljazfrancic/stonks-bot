@@ -58,7 +58,7 @@ will produce something like:
 * Run `python stonks.py`
 
 > [!NOTE]
-> All the commands listed under Usage will work if you substitute `!stonks` with `python stonks.py`, for example
+> All the Discord commands listed under Usage will work locally if you `cd` into project location and substitute `!stonks` with `python stonks.py`, for example:
 > ```
 > python stonks.py 365 avalanche-2 chainlink monero bitcoin ethereum
 > ```
@@ -66,5 +66,5 @@ will produce something like:
 # TODO #
 
 * [ ] Automatic deployment to AWS EC2 via GitHub Actions
-* [ ] Add stocks + ETFs
+* [ ] Add stocks and ETFs
 * [ ] Overall code quality improvements
