@@ -1,4 +1,4 @@
-from stonks import get_fig, default_coins, command_prefix
+from stonks import get_fig, default_tickers, command_prefix
 import matplotlib.pyplot as plt
 import discord
 import os
@@ -23,9 +23,9 @@ async def on_message(message):
         await message.channel.send("Roger, roger!")
         try:
             if len(command_split) == 1:
-                fig = await get_fig("365", default_coins)
+                fig = await get_fig("365", default_tickers)
             elif len(command_split) == 2:
-                fig = await get_fig(command_split[1], default_coins)
+                fig = await get_fig(command_split[1], default_tickers)
             else:
                 fig = await get_fig(command_split[1], command_split[2:])
 

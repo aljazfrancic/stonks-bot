@@ -20,11 +20,16 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Update pics
+        env:
+          POLYGON: ${{ secrets.POLYGON }}
         run: |
           python github_actions.py
-          python github_actions.py 1
+          sleep 1m # pause because of API restrictions
+          python github_actions.py 3
+          sleep 1m
           python github_actions.py 14
-          python github_actions.py 365 avalanche-2 chainlink monero bitcoin ethereum
+          sleep 1m
+          python github_actions.py 365 X:BTCUSD GOOG NVDA AAPL
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:

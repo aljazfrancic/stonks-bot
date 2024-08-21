@@ -1,20 +1,21 @@
 # Purpose #
 
-The purpose of this Discord bot is to pull the prices of user-defined coins from CoinGecko for a user-defined number of last days and display them in a plot in a relative manner.
-The prices for the first coin on the list are also shown.
+The purpose of this Discord bot is to pull the close prices for user-defined list of assets (cryptocurrencies, stocks, etc.) for a select number of last days and display them in a plot in a relative manner.
 
-> [!TIP]  
+The close prices for the first asset on the list are also shown.
+
+> [!NOTE]  
 > The images below are updated automagically via Github Actions every hour!
 
 # Usage #
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
-Default settings (maximum number of days available on CoinGecko, using coins bitcoin, ethereum and monero):
+Default settings (365 days, using tickers `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`):
 ```
 !stonks
 ```
-will produce something like:
+will produce:
 ![example 1](pics/!stonks.png)
 
 Default settings with user-defined number of days:
@@ -25,24 +26,27 @@ for example:
 ```
 !stonks 1
 ```
-will produce something like:
-![example 2](pics/!stonks_1.png)
+will produce:
+![example 2](pics/!stonks_3.png)
 ```
 !stonks 14
 ```
-will produce something like:
+will produce:
 ![example 3](pics/!stonks_14.png)
 
 Custom input:
 ```
-!stonks <number of days> <CoinGecko API ids with spaces>
+!stonks <number of days> <tickers with spaces>
 ```
 for example:
 ```
-!stonks 365 avalanche-2 chainlink monero bitcoin ethereum
+!stonks 365 X:BTCUSD GOOG NVDA AAPL
 ```
-will produce something like:
-![example 4](pics/!stonks_365_avalanche-2_chainlink_monero_bitcoin_ethereum.png)
+will produce:
+![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
+
+> [!TIP]  
+> In terms of [tickers](https://polygon.io/quote/tickers), mixing cryptocurrencies and stocks is allowed!
 
 # Installation #
 
@@ -55,16 +59,24 @@ will produce something like:
 
 ## Running locally ##
 
+> [!IMPORTANT]
+> All the Discord commands listed under [Usage](#usage) will work locally if you `cd` into project location and substitute `!stonks` with `python stonks.py`!
+>
+> However, for this to work, you must provide a [polygon.io]() API key, which you can acquire for free on their website.
+> Then create a file named `.env` and paste your polygon API `<key>` into it like so:
+> ```
+> POLYGON=<key>
+> ```
+
 * Run `python stonks.py`
 
-> [!NOTE]
-> All the Discord commands listed under Usage will work locally if you `cd` into project location and substitute `!stonks` with `python stonks.py`, for example:
+With some additional parameters:
 > ```
-> python stonks.py 365 avalanche-2 chainlink monero bitcoin ethereum
+> python stonks.py 365 X:BTCUSD GOOG NVDA AAPL
 > ```
 
 # TODO #
 
+* [ ] Add Discord Application guide to `README.md`
 * [ ] Automatic deployment to AWS EC2 via GitHub Actions
-* [ ] Add stocks and ETFs
 * [ ] Overall code quality improvements

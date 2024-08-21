@@ -7,13 +7,16 @@ import urllib3
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
 
 plt.style.use("dark_background")
+
 command_prefix = "!stonks"
-default_coins = ["bitcoin", "ethereum", "monero"]
+
+default_tickers = ["X:BTCUSD", "X:ETHUSD", "X:XMRUSD"]
 
 
 #################
@@ -26,41 +29,51 @@ def do_req(url):
     return json.loads(response.data)
 
 
-##################
-# COINGECKO PART #
-##################
+################
+# POLYGON PART #
+################
+
+# doesn't use the official https://github.com/polygon-io/client-python
+# which would be more elegant
 
 # get historical data for one coin
-def get_coin_historic_price_gecko(coin, days, key):
-    print(coin)
-    data = do_req(
-        f"https://api.coingecko.com/api/v3/coins/{coin}/market_chart?vs_currency=usd&days={days}&x_cg_api_key={key}")
-    data_array = np.array(data["prices"])
 
-    prices = data_array[:, 1]
-    timestamps = data_array[:, 0]
+def get_coin_historic_price_polygon(ticker, days, key):
+    print(ticker)
+    int_days = int(days) + 1
+    end = int(time.time() * 1000)
+    start = end - int_days * 24 * 60 * 60 * 1000
+    req = (f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/{"day" if int_days > 60 else "hour"}"
+           f"/{start}/{end}?limit=50000&apiKey={key}")
+    data = do_req(req)
+    data_array = np.array(data["results"])
+    prices = []
+    timestamps = []
     readable_dates = []
-    for date in timestamps:
+    for row in data_array:
+        prices.append(row["c"])
+        timestamp = row["t"]
+        timestamps.append(timestamp)
         readable_dates.append(
-            f"{datetime.datetime.fromtimestamp(int(date) / 1000,
+            f"{datetime.datetime.fromtimestamp(int(timestamp) / 1000,
                                                datetime.timezone.utc).strftime("%Y-%m-%d %H:%M")} UTC")
-    readable_dates = np.array(readable_dates)
-    return prices, readable_dates, timestamps
+
+    return np.array(prices), np.array(readable_dates), np.array(timestamps)
 
 
 ###################
 # MATPLOTLIB PART #
 ###################
 
-async def get_fig(days, coins):
+async def get_fig(days, tickers):
     coins_prices = []
     coins_timestamps = []
     oldest_readable_date = None
     oldest_timestamps = None
     age = np.inf
-    key = os.getenv("COIN_GECKO")
-    for coin in coins:
-        prices, readable_dates, timestamps = get_coin_historic_price_gecko(coin, days, key)
+    key = os.getenv("POLYGON")
+    for ticker in tickers:
+        prices, readable_dates, timestamps = get_coin_historic_price_polygon(ticker, days, key)
         # find the oldest coin
         if age > timestamps[0]:
             oldest_readable_date = readable_dates
@@ -119,10 +132,10 @@ async def get_fig(days, coins):
     plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
     plt.grid(color="#595959", linestyle="--")
-    plt.legend(coins, bbox_to_anchor=(1.02, 1), loc="upper left")
+    plt.legend(tickers, bbox_to_anchor=(1.02, 1), loc="upper left")
     plt.xlabel("time")
-    plt.ylabel("$ %")
-    plt.title(f"{("last day" if days_num == 1 else f"{days} days")}" + " crypto price comparison")
+    plt.ylabel("%")
+    plt.title(f"{("last day" if days_num == 1 else f"{days} days")}" + " asset price comparison")
     plt.tight_layout()
 
     return fig
@@ -133,15 +146,15 @@ def main(save):
     asyncio.set_event_loop(loop)
 
     if len(sys.argv) == 1:
-        task = get_fig("365", default_coins)
+        task = get_fig("365", default_tickers)
     elif len(sys.argv) == 2:
-        task = get_fig(sys.argv[1], default_coins)
+        task = get_fig(sys.argv[1], default_tickers)
     else:
         task = get_fig(sys.argv[1], sys.argv[2:])
 
     try:
         loop.run_until_complete(task)
-        args = sys.argv[1:]
+        args = [arg.replace(':', '-') for arg in sys.argv[1:]]
         if save:
             plt.savefig("pics/" + command_prefix + ("_" if len(args) > 0 else "") + "_".join(args) + ".png")
         else:
