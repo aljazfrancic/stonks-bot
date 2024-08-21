@@ -24,7 +24,7 @@ Default settings with user-defined number of days:
 ```
 for example:
 ```
-!stonks 1
+!stonks 3
 ```
 will produce:
 ![example 2](pics/!stonks_3.png)
