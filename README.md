@@ -62,7 +62,7 @@ will produce:
 > [!IMPORTANT]
 > All the Discord commands listed under [Usage](#usage) will work locally if you `cd` into project location and substitute `!stonks` with `python stonks.py`!
 >
-> However, for this to work, you must provide a [polygon.io]() API key, which you can acquire for free on their website.
+> However, for this to work, you must provide a [polygon.io](https://polygon.io/) API key, which you can acquire for free on their website.
 > Then create a file named `.env` and paste your polygon API `<key>` into it like so:
 > ```
 > POLYGON=<key>
