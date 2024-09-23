@@ -40,7 +40,7 @@ def do_req(url):
 
 def get_coin_historic_price_polygon(ticker, days, key):
     print(ticker)
-    int_days = int(days) + 1
+    int_days = int(days)
     end = int(time.time() * 1000)
     start = end - int_days * 24 * 60 * 60 * 1000
     req = (f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/{"day" if int_days > 60 else "hour"}"
