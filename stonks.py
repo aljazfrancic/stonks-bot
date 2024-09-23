@@ -40,7 +40,7 @@ def do_req(url):
 
 def get_coin_historic_price_polygon(ticker, days, key):
     print(ticker)
-    int_days = int(days) + 1
+    int_days = int(days)
     end = int(time.time() * 1000)
     start = end - int_days * 24 * 60 * 60 * 1000
     req = (f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/{"day" if int_days > 60 else "hour"}"
@@ -90,7 +90,7 @@ async def get_fig(days, tickers):
     threshold = 35
 
     # define ticks (hacky)
-    days_num = oldest_timestamps.shape[0] if days == "max" else int(days)
+    days_num = days
     ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1,
                                  25 if days_num == 1 else (threshold if days_num > threshold else (days_num + 1))))
     mini = 1

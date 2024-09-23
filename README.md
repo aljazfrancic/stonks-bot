@@ -5,7 +5,7 @@ The purpose of this Discord bot is to pull the close prices for user-defined lis
 The close prices for the first asset on the list are also shown.
 
 > [!NOTE]  
-> The images below are updated automagically via Github Actions every hour!
+> The images below are updated automagically via GitHub Actions every hour!
 
 # Usage #
 
