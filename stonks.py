@@ -90,7 +90,7 @@ async def get_fig(days, tickers):
     threshold = 35
 
     # define ticks (hacky)
-    days_num = days
+    days_num = int(days)
     ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1,
                                  25 if days_num == 1 else (threshold if days_num > threshold else (days_num + 1))))
     mini = 1
