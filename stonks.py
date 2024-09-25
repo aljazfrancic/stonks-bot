@@ -91,7 +91,7 @@ async def get_fig(days, tickers):
 
     # define ticks (hacky)
     days_num = int(days)
-    ticks_num = 10
+    ticks_num = 11
     ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1, ticks_num))
     mini = 1
     # for each coin in data
