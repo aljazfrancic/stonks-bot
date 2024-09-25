@@ -91,8 +91,8 @@ async def get_fig(days, tickers):
 
     # define ticks (hacky)
     days_num = int(days)
-    ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1,
-                                 25 if days_num == 1 else (threshold if days_num > threshold else (days_num + 1))))
+    ticks_num = 10
+    ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1, ticks_num))
     mini = 1
     # for each coin in data
     for i, d in enumerate(coins_prices):
@@ -102,9 +102,7 @@ async def get_fig(days, tickers):
         plt.plot(coins_timestamps[i], normalized)
         # for first coin plot price text
         if i == 0:
-            ticks_first_coin = np.int32(np.linspace(0, coins_timestamps[i].shape[0] - 1,
-                                                    25 if days_num == 1 else (
-                                                        threshold if days_num > threshold else (days_num + 1))))
+            ticks_first_coin = np.int32(np.linspace(0, coins_timestamps[i].shape[0] - 1, ticks_num))
             for x, y, z in zip(coins_timestamps[i][ticks_first_coin], np.array(normalized)[ticks_first_coin],
                                np.array(d)[ticks_first_coin]):
                 plt.text(
