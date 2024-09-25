@@ -43,7 +43,7 @@ def get_coin_historic_price_polygon(ticker, days, key):
     int_days = int(days)
     end = int(time.time() * 1000)
     start = end - int_days * 24 * 60 * 60 * 1000
-    req = (f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/{"day" if int_days > 60 else "hour"}"
+    req = (f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/{"day" if int_days > 60 else "minute"}"
            f"/{start}/{end}?limit=50000&apiKey={key}")
     data = do_req(req)
     data_array = np.array(data["results"])
