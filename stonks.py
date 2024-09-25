@@ -86,9 +86,6 @@ async def get_fig(days, tickers):
     # plot size
     fig = plt.figure(figsize=(15, 6))
 
-    # threshold for number of datapoints for displaying first coin's price and showing dates on x-axis labels
-    threshold = 35
-
     # define ticks (hacky)
     days_num = int(days)
     ticks_num = 11
