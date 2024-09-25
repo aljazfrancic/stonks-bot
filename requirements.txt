@@ -3,4 +3,3 @@ numpy
 matplotlib
 discord
 python-dotenv
-humanize
