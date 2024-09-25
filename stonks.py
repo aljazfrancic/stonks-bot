@@ -154,7 +154,7 @@ def main(save):
 
     try:
         loop.run_until_complete(task)
-        args = [arg.replace(':', '-') for arg in sys.argv[1:]]
+        args = [arg.replace(":", "-") for arg in sys.argv[1:]]
         if save:
             plt.savefig("pics/" + command_prefix + ("_" if len(args) > 0 else "") + "_".join(args) + ".png")
         else:
