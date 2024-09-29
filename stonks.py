@@ -96,7 +96,7 @@ async def get_fig(days, tickers):
         # normalize
         normalized = d / d.max()
         # plot line for one coin
-        plt.plot(coins_timestamps[i], normalized)
+        plt.plot(coins_timestamps[i], normalized, linewidth=3)
         # for first coin plot price text
         if i == 0:
             ticks_first_coin = np.int32(np.linspace(0, coins_timestamps[i].shape[0] - 1, ticks_num))
@@ -126,7 +126,7 @@ async def get_fig(days, tickers):
     plt.gca().set_yticklabels((price_ticks * 100).astype(int))
     plt.gca().set_ylim(mini - 0.05, 1.05)
     plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
-    plt.grid(color="#595959", linestyle="--")
+    plt.grid(linewidth=2, color="#595959", linestyle="--")
     plt.legend(tickers, bbox_to_anchor=(1.02, 1), loc="upper left")
     plt.xlabel("time")
     plt.ylabel("%")
