@@ -16,7 +16,7 @@ plt.style.use("dark_background")
 
 command_prefix = "!stonks"
 
-default_tickers = ["X:BTCUSD", "X:ETHUSD", "X:XMRUSD"]
+default_tickers = ["X:BTCUSD", "X:ETHUSD", "X:XMRUSD", "X:AVAXUSD"]
 
 
 #################
