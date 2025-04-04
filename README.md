@@ -77,6 +77,7 @@ With some additional parameters:
 
 # TODO #
 
+* [ ] Revert back to CoinGecko
 * [ ] Add Discord Application guide to `README.md`
 * [ ] Automatic deployment to AWS EC2 via GitHub Actions
 * [ ] Overall code quality improvements
