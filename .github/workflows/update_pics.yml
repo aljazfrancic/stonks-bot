@@ -29,7 +29,9 @@ jobs:
           sleep 1m
           python github_actions.py 14
           sleep 1m
-          python github_actions.py 365 X:BTCUSD GOOG NVDA AAPL
+          python github_actions.py 365 BTC GOOG NVDA AAPL
+          sleep 1m
+          python github_actions.py 30 BTC ETH AAPL GOOG
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:

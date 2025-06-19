@@ -5,7 +5,7 @@
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data.
+> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple sources.
 
 ## 🚀 Quick Start
 
@@ -26,7 +26,13 @@ cd stonks-bot && ./scripts/setup.sh
 ```bash
 DISCORD_TOKEN=your_discord_bot_token
 POLYGON=your_polygon_api_key
+COIN_GECKO=your_coingecko_api_key  # Optional: for higher rate limits
 ```
+
+> [!NOTE]
+> **Mixed Data Sources:** The bot intelligently uses CoinGecko API for cryptocurrencies (free, no API key needed) and Polygon.io for stocks (requires API key). This provides the best of both worlds - reliable crypto data and comprehensive stock coverage.
+> 
+> **Rate Limiting:** CoinGecko free API has rate limits (~50 calls/minute). The bot includes automatic rate limiting. For higher limits, add your CoinGecko API key to `COIN_GECKO` environment variable.
 
 **Scripts:**
 - `./scripts/setup.sh` - Quick local setup
@@ -36,7 +42,7 @@ POLYGON=your_polygon_api_key
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
-### Default settings (365 days, using tickers `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`):
+### Default settings (365 days, using tickers `BTC`, `ETH`, `XMR`, `AVAX`):
 ```
 !stonks
 ```
@@ -65,13 +71,27 @@ will produce:
 ```
 for example:
 ```
-!stonks 365 X:BTCUSD GOOG NVDA AAPL
+!stonks 365 BTC GOOG NVDA AAPL
 ```
 will produce:
-![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
+![example 4](pics/!stonks_365_BTC_GOOG_NVDA_AAPL.png)
+
+### Mixed crypto and stocks:
+```
+!stonks <number of days> <mixed tickers>
+```
+for example:
+```
+!stonks 30 BTC ETH AAPL GOOG
+```
+will produce:
+![example 5](pics/!stonks_30_BTC_ETH_AAPL_GOOG.png)
 
 > [!TIP]  
-> In terms of [tickers](https://polygon.io/quote/tickers), mixing cryptocurrencies and stocks is allowed!
+> **Mixed Assets:** You can mix cryptocurrencies and stocks! The bot automatically chooses the best data source:
+> - **Cryptocurrencies:** Uses CoinGecko API by default (BTC, ETH, XMR, AVAX, ADA, DOT, LINK, UNI, LTC, BCH, XRP, DOGE, SHIB, MATIC, SOL, ATOM, NEAR, FTM, ALGO, VET)
+> - **Stocks:** Uses Polygon.io API (AAPL, GOOG, NVDA, TSLA, etc.)
+> - **Fallback:** If CoinGecko fails, automatically falls back to Polygon
 
 ## 📁 Structure & Docs
 
@@ -87,7 +107,7 @@ stonks-bot/
 
 ## 📝 TODO
 
-- [ ] Revert back to CoinGecko
+- [x] ✅ Implement mixed CoinGecko/Polygon data sources
 - [ ] Overall code quality improvements
 
 ---

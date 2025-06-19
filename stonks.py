@@ -16,7 +16,7 @@ plt.style.use("dark_background")
 
 command_prefix = "!stonks"
 
-default_tickers = ["X:BTCUSD", "X:ETHUSD", "X:XMRUSD", "X:AVAXUSD"]
+default_tickers = ["BTC", "ETH", "XMR", "AVAX"]
 
 
 #################
@@ -31,17 +31,65 @@ def do_req(url):
 
 
 ################
+# COINGECKO PART #
+################
+
+def get_coin_historic_price_coingecko(coin_id, days):
+    """Get historical price data from CoinGecko API"""
+    print(f"CoinGecko: {coin_id}")
+    int_days = int(days)
+    # CoinGecko interval logic - avoid hourly as it requires Enterprise plan
+    if int_days <= 1:
+        # For 1 day, use daily interval (hourly requires Enterprise)
+        interval = "daily"
+    elif int_days <= 90:
+        interval = "daily"
+    else:
+        interval = "daily"
+    
+    # Check if we have a CoinGecko API key for higher rate limits
+    coingecko_key = os.getenv("COIN_GECKO")
+    if coingecko_key:
+        url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart?vs_currency=usd&days={int_days}&interval={interval}&x_cg_demo_api_key={coingecko_key}"
+    else:
+        url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart?vs_currency=usd&days={int_days}&interval={interval}"
+    
+    try:
+        data = do_req(url)
+        
+        if "prices" not in data:
+            print(f"CoinGecko API error: {data}")
+            # Check if it's a rate limit error
+            if "error_code" in str(data) and "10005" in str(data):
+                raise Exception("CoinGecko rate limit exceeded")
+            raise Exception(f"Invalid response from CoinGecko: {data}")
+        
+        prices = []
+        timestamps = []
+        readable_dates = []
+        
+        for price_point in data["prices"]:
+            timestamp = price_point[0]
+            price = price_point[1]
+            prices.append(price)
+            timestamps.append(timestamp)
+            readable_dates.append(
+                f"{datetime.datetime.fromtimestamp(int(timestamp) / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC"
+            )
+        
+        return np.array(prices), np.array(readable_dates), np.array(timestamps)
+    except Exception as e:
+        print(f"CoinGecko API call failed: {e}")
+        raise e
+
+
+################
 # POLYGON PART #
 ################
 
-# doesn't use the official https://github.com/polygon-io/client-python
-# which would be more elegant
-
-# get historical data for one coin
-
-
 def get_coin_historic_price_polygon(ticker, days, key):
-    print(ticker)
+    """Get historical price data from Polygon API"""
+    print(f"Polygon: {ticker}")
     int_days = int(days)
     end = int(time.time() * 1000)
     start = end - int_days * 24 * 60 * 60 * 1000
@@ -64,6 +112,69 @@ def get_coin_historic_price_polygon(ticker, days, key):
 
 
 ###################
+# DATA SOURCE SELECTOR #
+###################
+
+# Mapping of common crypto tickers to CoinGecko IDs
+CRYPTO_MAPPING = {
+    "BTC": "bitcoin",
+    "ETH": "ethereum", 
+    "XMR": "monero",
+    "AVAX": "avalanche-2",
+    "ADA": "cardano",
+    "DOT": "polkadot",
+    "LINK": "chainlink",
+    "UNI": "uniswap",
+    "LTC": "litecoin",
+    "BCH": "bitcoin-cash",
+    "XRP": "ripple",
+    "DOGE": "dogecoin",
+    "SHIB": "shiba-inu",
+    "MATIC": "matic-network",
+    "SOL": "solana",
+    "ATOM": "cosmos",
+    "NEAR": "near",
+    "FTM": "fantom",
+    "ALGO": "algorand",
+    "VET": "vechain"
+}
+
+def get_data_source(ticker):
+    """Determine the best data source for a given ticker"""
+    # Check if it's a known crypto
+    if ticker in CRYPTO_MAPPING:
+        return "coingecko", CRYPTO_MAPPING[ticker]
+    
+    # Default to Polygon for stocks and other assets
+    return "polygon", ticker
+
+def get_historic_price(ticker, days, polygon_key):
+    """Get historical price data using the best available source"""
+    source, identifier = get_data_source(ticker)
+    
+    try:
+        if source == "coingecko":
+            return get_coin_historic_price_coingecko(identifier, days)
+        else:
+            return get_coin_historic_price_polygon(identifier, days, polygon_key)
+    except Exception as e:
+        print(f"Error with {source} for {ticker}: {e}")
+        # Fallback to Polygon if CoinGecko fails
+        if source == "coingecko":
+            print(f"Falling back to Polygon for {ticker}")
+            try:
+                return get_coin_historic_price_polygon(ticker, days, polygon_key)
+            except Exception as polygon_error:
+                print(f"Polygon fallback also failed for {ticker}: {polygon_error}")
+                # If both fail, provide helpful error message
+                if "rate limit" in str(e).lower():
+                    print(f"💡 Tip: Add COIN_GECKO API key to environment for higher rate limits")
+                raise polygon_error
+        else:
+            raise e
+
+
+###################
 # MATPLOTLIB PART #
 ###################
 
@@ -75,10 +186,9 @@ async def get_fig(days, tickers):
     oldest_timestamps = None
     age = np.inf
     key = os.getenv("POLYGON")
+    
     for ticker in tickers:
-        prices, readable_dates, timestamps = get_coin_historic_price_polygon(
-            ticker, days, key
-        )
+        prices, readable_dates, timestamps = get_historic_price(ticker, days, key)
         # find the oldest coin
         if age > timestamps[0]:
             oldest_readable_date = readable_dates
@@ -161,7 +271,7 @@ def main(save):
 
     try:
         loop.run_until_complete(task)
-        args = [arg.replace(":", "-") for arg in sys.argv[1:]]
+        args = [arg.replace(":", "") for arg in sys.argv[1:]]
         if save:
             plt.savefig(
                 "pics/"

@@ -21,6 +21,7 @@ Before you begin, make sure you have:
 3. **Set environment variables** in Railway dashboard:
    - `DISCORD_TOKEN`: Your Discord bot token
    - `POLYGON`: Your Polygon.io API key
+   - `COIN_GECKO`: Your CoinGecko API key (optional, for higher rate limits)
 4. **Deploy** - Railway will automatically build and deploy your bot!
 
 ## Manual Deploy
@@ -38,6 +39,7 @@ Before you begin, make sure you have:
    - Add the following environment variables:
      - `DISCORD_TOKEN`: Your Discord bot token
      - `POLYGON`: Your Polygon.io API key
+     - `COIN_GECKO`: Your CoinGecko API key (optional, for higher rate limits)
 
 3. **Configure Build Settings**
    - Railway will automatically detect this as a Python project
@@ -65,6 +67,7 @@ Before you begin, make sure you have:
    ```bash
    railway variables --set "DISCORD_TOKEN=your_discord_bot_token_here"
    railway variables --set "POLYGON=your_polygon_api_key_here"
+   railway variables --set "COIN_GECKO=your_coingecko_api_key_here"
    ```
 
 5. **Deploy**
@@ -109,7 +112,7 @@ Before you begin, make sure you have:
    ```
    !stonks
    !stonks 7
-   !stonks 30 X:BTCUSD GOOG NVDA
+   !stonks 30 BTC GOOG NVDA
    ```
 
 ## Monitor and Maintain
@@ -135,6 +138,7 @@ Before you begin, make sure you have:
 |-------|-------|----------|
 | **Bot Not Responding** | Invalid token or permissions | Check Railway logs, verify `DISCORD_TOKEN`, ensure bot has proper permissions |
 | **API Rate Limits** | Polygon.io free tier limits | Consider upgrading to paid plan for higher limits |
+| **CoinGecko Rate Limits** | Free API rate limits (~50 calls/min) | Add `COIN_GECKO` API key for higher limits, or wait for rate limit reset |
 | **Build Failures** | Missing dependencies | Check `requirements.txt`, ensure all files are committed |
 | **Environment Variables Not Set** | Missing or incorrect variables | Verify variables in Railway dashboard, check case sensitivity |
 
