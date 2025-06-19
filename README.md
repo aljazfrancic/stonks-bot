@@ -7,13 +7,6 @@
 
 > Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data.
 
-## Table of Contents
-- [Quick Start](#quick-start)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Structure & Docs](#structure--docs)
-- [TODO](#todo)
-
 ## 🚀 Quick Start
 
 **Deploy to Railway (Recommended):**

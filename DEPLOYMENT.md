@@ -6,6 +6,8 @@ Complete guide for deploying the Stonks Bot on Railway.
 - [Prerequisites](#prerequisites)
 - [Quick Deploy](#quick-deploy)
 - [Manual Deploy](#manual-deploy)
+  - [Option A: Deploy via Railway Dashboard](#option-a-deploy-via-railway-dashboard)
+  - [Option B: Deploy via Railway CLI](#option-b-deploy-via-railway-cli)
 - [Configure Discord Bot](#configure-discord-bot)
 - [Verify Deployment](#verify-deployment)
 - [Monitor and Maintain](#monitor-and-maintain)
