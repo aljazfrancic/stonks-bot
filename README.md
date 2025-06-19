@@ -7,6 +7,13 @@
 
 > Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data.
 
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Structure & Docs](#structure--docs)
+- [TODO](#todo)
+
 ## 🚀 Quick Start
 
 **Deploy to Railway (Recommended):**
@@ -70,8 +77,7 @@ for example:
 will produce:
 ![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
 
-> [!TIP]  
-> In terms of [tickers](https://polygon.io/quote/tickers), mixing cryptocurrencies and stocks is allowed!
+> **Tip:** You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
 ## 📁 Structure & Docs
 
