@@ -9,19 +9,28 @@
 
 ## 🚀 Quick Start
 
-### Deploy to Railway (Recommended)
+**Deploy to Railway (Recommended):**
+1. Fork this repository → Get [Discord Bot Token](https://discord.com/developers/applications) & [Polygon.io API Key](https://polygon.io/)
+2. `railway up` → Set environment variables in Railway dashboard → Invite bot to server
+
+**Run Locally:**
 ```bash
-# Fork this repo, then:
-railway up
+git clone https://github.com/aljazfrancic/stonks-bot.git
+cd stonks-bot && ./scripts/setup.sh
+# Edit .env with your API keys, then: python bot.py
 ```
 
-### Run Locally
+## 🔧 Setup
+
+**Environment Variables:**
 ```bash
-git clone https://github.com/yourusername/stonks-bot.git
-cd stonks-bot
-pip install -r requirements.txt
-python bot.py
+DISCORD_TOKEN=your_discord_bot_token
+POLYGON=your_polygon_api_key
 ```
+
+**Scripts:**
+- `./scripts/setup.sh` - Quick local setup
+- `./scripts/deploy.sh` - Deploy to Railway
 
 ## 📖 Usage
 
@@ -64,59 +73,17 @@ will produce:
 > [!TIP]  
 > In terms of [tickers](https://polygon.io/quote/tickers), mixing cryptocurrencies and stocks is allowed!
 
-## 🔧 Setup
-
-### Environment Variables
-Create `.env` file:
-```bash
-DISCORD_TOKEN=your_discord_bot_token
-POLYGON=your_polygon_api_key
-```
-
-### Prerequisites
-- [Discord Bot Token](https://discord.com/developers/applications)
-- [Polygon.io API Key](https://polygon.io/) (free tier)
-
-## 📁 Project Structure
+## 📁 Structure & Docs
 
 ```
 stonks-bot/
-├── bot.py               # Main Discord bot
-├── stonks.py            # Chart generation logic
-├── requirements.txt     # Python dependencies
-├── scripts/             # Utility scripts
-│   ├── setup.sh         # Quick setup script
-│   └── deploy.sh        # Railway deployment
-├── docs/                # Documentation
-│   └── DEPLOYMENT.md    # Detailed deployment guide
-└── pics/                # Example charts
+├── bot.py, stonks.py       # Main bot & chart logic
+├── scripts/                # setup.sh, deploy.sh
+├── DEPLOYMENT.md           # Full deployment guide
+└── pics/                   # Example charts
 ```
 
-## 🛠️ Scripts
-
-### Quick Setup
-```bash
-./scripts/setup.sh
-```
-
-### Deploy to Railway
-```bash
-./scripts/deploy.sh
-```
-
-## 📚 Documentation
-
-- [📖 Full Deployment Guide](docs/DEPLOYMENT.md)
-- [🔧 Troubleshooting](docs/DEPLOYMENT.md#troubleshooting)
-- [🔒 Security Best Practices](docs/DEPLOYMENT.md#security-best-practices)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+**Documentation:** [Deployment Guide](DEPLOYMENT.md) • [Troubleshooting](DEPLOYMENT.md#troubleshooting) • [Security](DEPLOYMENT.md#security-best-practices)
 
 ## 📝 TODO
 
@@ -124,5 +91,4 @@ stonks-bot/
 - [ ] Overall code quality improvements
 
 ---
-
-**Need help?** [Open an issue](https://github.com/yourusername/stonks-bot/issues) or check the [full documentation](docs/DEPLOYMENT.md).
+**Need help?** [Open an issue](https://github.com/aljazfrancic/stonks-bot/issues) • [Full docs](DEPLOYMENT.md)

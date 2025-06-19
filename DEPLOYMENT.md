@@ -219,4 +219,4 @@ If you're still experiencing issues:
 ### Community & Support
 - [Discord.py Community](https://discord.gg/dpy) - Official Discord server
 - [Railway Community](https://discord.gg/railway) - Railway support and discussions
-- [GitHub Issues](https://github.com/yourusername/stonks-bot/issues) - Report bugs and request features 
+- [GitHub Issues](https://github.com/aljazfrancic/stonks-bot/issues) - Report bugs and request features 
