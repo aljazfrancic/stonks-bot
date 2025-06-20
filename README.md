@@ -114,6 +114,3 @@ Original file line number	Diff line number	Diff line change
 
 - [ ] Revert back to CoinGecko
 - [ ] Overall code quality improvements
-
----
-**Need help?** [Open an issue](https://github.com/aljazfrancic/stonks-bot/issues) • [Full docs](DEPLOYMENT.md)
