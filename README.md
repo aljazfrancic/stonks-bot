@@ -72,16 +72,6 @@ will produce:
 
 > **Tip:** You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
-## 📁 Structure & Docs
-
-```
-stonks-bot/
-├── bot.py, stonks.py       # Main bot & chart logic
-├── scripts/                # setup.sh, deploy.sh
-├── DEPLOYMENT.md           # Full deployment guide
-└── pics/                   # Example charts
-```
-
 **Documentation:** [Deployment Guide](DEPLOYMENT.md) • [Troubleshooting](DEPLOYMENT.md#troubleshooting) • [Security](DEPLOYMENT.md#security-best-practices)
 
 ## 📝 TODO
