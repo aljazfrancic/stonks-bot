@@ -72,7 +72,43 @@ will produce:
 
 > **Tip:** You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
-**Documentation:** [Deployment Guide](DEPLOYMENT.md) • [Troubleshooting](DEPLOYMENT.md#troubleshooting) • [Security](DEPLOYMENT.md#security-best-practices)
+
+Navigation Menu
+stonks-bot
+
+Code
+Issues
+Pull requests
+Commit e5ac8bb
+aljazfrancic
+aljazfrancic
+authored
+2 minutes ago
+·
+·
+Verified
+Update README.md
+main
+1 parent 
+32e88ad
+ commit 
+e5ac8bb
+1 file changed
+Search within code
+ 
+‎README.md
+-10
+Lines changed: 0 additions & 10 deletions
+
+
+Original file line number	Diff line number	Diff line change
+@@ -72,16 +72,6 @@ will produce:
+
+> **Tip:** You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
+
+## 📁 Docs
+
+- [Deployment Guide](DEPLOYMENT.md)
 
 ## 📝 TODO
 
