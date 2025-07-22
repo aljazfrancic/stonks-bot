@@ -34,7 +34,8 @@ POLYGON=your_polygon_api_key
 
 ## 📖 Usage
 
-> [!NOTE] The following graphs are automagically updated via GitHub actions, so we're looking at the latest data available wihtout paying any subscriptions.
+> [!NOTE]
+> The following graphs are automagically updated via GitHub actions, so we're looking at the latest data available wihtout paying any subscriptions.
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
@@ -72,7 +73,8 @@ for example:
 will produce:
 ![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
 
-> [!TIP] You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
+> [!TIP]
+> You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
 ## 📁 Docs
 
