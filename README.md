@@ -62,7 +62,7 @@ will produce:
 will produce:
 ![example 3](pics/!stonks_14.png)
 
-### Custom input:
+Custom input:
 ```
 !stonks <number of days> <tickers with spaces>
 ```
