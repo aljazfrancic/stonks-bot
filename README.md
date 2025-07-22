@@ -35,7 +35,7 @@ POLYGON=your_polygon_api_key
 ## 📖 Usage
 
 > [!NOTE]
-> The following graphs are automagically updated via GitHub actions, so we're looking at the latest data available wihtout paying any subscriptions.
+> The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available wihtout paying any subscriptions.
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
