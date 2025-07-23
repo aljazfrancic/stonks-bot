@@ -43,6 +43,9 @@ POLYGON=your_polygon_api_key
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
+> [!TIP]
+> You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
+
 Default settings (365 days, using tickers `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`):
 ```
 !stonks
@@ -76,9 +79,6 @@ for example:
 ```
 will produce:
 ![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
-
-> [!TIP]
-> You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
 ## 📝 TODO
 
