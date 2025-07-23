@@ -32,6 +32,10 @@ POLYGON=your_polygon_api_key
 - `./scripts/setup.sh` - Quick local setup
 - `./scripts/deploy.sh` - Deploy to Railway
 
+## 🤖 Deployment
+
+- [Deployment Guide](DEPLOYMENT.md)
+
 ## 📖 Usage
 
 > [!NOTE]
@@ -75,10 +79,6 @@ will produce:
 
 > [!TIP]
 > You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
-
-## 📁 Docs
-
-- [Deployment Guide](DEPLOYMENT.md)
 
 ## 📝 TODO
 
