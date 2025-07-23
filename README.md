@@ -82,5 +82,6 @@ will produce:
 
 ## 📝 TODO
 
+- [ ] Squash existing and future chore commits
 - [ ] Combine CoinGecko and Polygon tickers
 - [ ] Overall code quality improvements
