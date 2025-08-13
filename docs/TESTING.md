@@ -1,6 +1,6 @@
 # 🧪 Testing Guide
 
-## 🚀 Quick Test
+## ⚡ Quick Test
 
 Run the comprehensive test suite:
 
@@ -73,7 +73,7 @@ Tests use `unittest.mock` to isolate components:
 ## 📊 Test Results
 
 Expected output:
-```
+```text
 .......
 ----------------------------------------------------------------------
 Ran 7 tests in 0.123s

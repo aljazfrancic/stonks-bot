@@ -1,6 +1,6 @@
 # 🔧 Setup Guide
 
-## 🚀 Quick Start
+## ⚡ Quick Start
 
 **Deploy to Railway (Recommended):**
 1. Fork this repository → Get [Discord Bot Token](https://discord.com/developers/applications) & [Polygon.io API Key](https://polygon.io/)
@@ -36,7 +36,7 @@ LOG_LEVEL=INFO          # Optional: DEBUG/INFO/WARNING/ERROR
 
 ## 🔗 Related Documentation
 
-- [Deployment Guide](DEPLOYMENT.md)
-- [Environment Variables Guide](ENVIRONMENT_VARIABLES.md)
+- [Deployment Guide](../DEPLOYMENT.md)
+- [Environment Variables Guide](../ENVIRONMENT_VARIABLES.md)
 - [Testing Guide](TESTING.md)
 - [Development Guide](DEVELOPMENT.md)

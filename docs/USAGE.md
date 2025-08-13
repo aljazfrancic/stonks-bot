@@ -8,13 +8,13 @@ To use the bot, send it a direct message on Discord or post in any channel the b
 > You can mix stock and cryptocurrency tickers in the same command! Use `X:SYMBOL` for stocks/Polygon data and `SYMBOL` for CoinGecko cryptocurrencies.
 
 ### **Default Settings (365 days)**
-```
+```text
 !stonks
 ```
 Uses default mixed portfolio: `BTC`, `ETH`, `XMR`, `AVAX`
 
 ### **Custom Time Periods**
-```
+```text
 !stonks 3    # Last 3 days
 !stonks 14   # Last 2 weeks
 !stonks 30   # Last month
@@ -24,17 +24,17 @@ Uses default mixed portfolio: `BTC`, `ETH`, `XMR`, `AVAX`
 ### **Custom Ticker Combinations**
 
 **Stocks only:**
-```
+```text
 !stonks 30 X:GOOG X:NVDA X:AAPL X:MSFT
 ```
 
 **Cryptocurrencies only:**
-```
+```text
 !stonks 7 BTC ETH SOL ADA DOT
 ```
 
 **Mixed portfolio:**
-```
+```text
 !stonks 90 X:BTCUSD ETH X:GOOG X:NVDA
 ```
 

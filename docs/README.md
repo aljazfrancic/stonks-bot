@@ -13,7 +13,7 @@ Welcome to the Stonks Bot documentation! This folder contains comprehensive guid
 - **[Development Guide](DEVELOPMENT.md)** - Architecture, code quality, and contribution guidelines
 - **[Testing Guide](TESTING.md)** - Run tests and understand test coverage
 
-## 🚀 Deployment
+## 🚂 Deployment
 
 - **[Deployment Guide](../DEPLOYMENT.md)** - Deploy to Railway or other platforms
 - **[Environment Variables](../ENVIRONMENT_VARIABLES.md)** - Configure API keys and settings

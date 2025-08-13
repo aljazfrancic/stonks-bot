@@ -7,7 +7,7 @@
 
 > Advanced Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple APIs.
 
-## 🚀 Quick Start
+## ⚡ Quick Start
 
 **Deploy to Railway (Recommended):**
 1. Fork this repository → Get [Discord Bot Token](https://discord.com/developers/applications) & [Polygon.io API Key](https://polygon.io/)
@@ -26,25 +26,25 @@ cd stonks-bot && ./scripts/setup.sh
 > The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available without paying any subscriptions.
 
 ### **Default Portfolio (365 days):**
-```
+```text
 !stonks
 ```
 ![Default Portfolio](pics/!stonks.png)
 
 ### **Short-term Analysis (3 days):**
-```
+```text
 !stonks 3
 ```
 ![3-Day Chart](pics/!stonks_3.png)
 
 ### **Medium-term Analysis (14 days):**
-```
+```text
 !stonks 14
 ```
 ![14-Day Chart](pics/!stonks_14.png)
 
-### **BTC and Major Tech Stocks (365 days):**
-```
+### **🚂 BTC and Major Tech Stocks (365 days):**
+```text
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
 ![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
@@ -76,7 +76,7 @@ LOG_LEVEL=INFO          # Optional: DEBUG/INFO/WARNING/ERROR
 
 📖 **[Full Documentation](docs/README.md)** - Complete guides and setup instructions
 
-## 🚀 Deploy
+## 🚂 Deploy
 
 **Railway (Recommended):**
 ```bash
@@ -84,7 +84,7 @@ railway login
 railway up
 ```
 
-**Manual Setup:** See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+**Manual Setup:** See [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## 🧪 Testing
 

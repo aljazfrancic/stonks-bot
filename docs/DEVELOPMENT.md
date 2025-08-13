@@ -2,7 +2,7 @@
 
 ## 🏗️ Project Structure
 
-```
+```text
 stonks-bot/
 ├── stonks.py          # Core chart generation logic
 ├── bot.py             # Discord bot implementation
@@ -103,7 +103,7 @@ stonks-bot/
 - **Error Handling**: Specific exception types
 - **Testing**: 90%+ coverage target
 
-## 🚀 Adding New Features
+## ⚡ Adding New Features
 
 ### **New Data Provider**
 1. Extend `DataProvider` base class
