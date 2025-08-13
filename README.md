@@ -36,6 +36,15 @@ POLYGON=your_polygon_api_key
 
 - [Deployment Guide](DEPLOYMENT.md)
 
+## 🔄 CI/CD Behavior
+
+The GitHub Actions workflow automatically updates the stonks images every hour. **Smart Commit Management:**
+
+- **If the last commit is a chore commit** (autopublish): Automatically amends the existing commit instead of creating new ones
+- **If the last commit is not a chore commit**: Creates a new commit as usual
+
+This keeps the git history clean by consolidating all autopublish updates into single commits, preventing the repository from being cluttered with hundreds of individual chore commits.
+
 ## 📖 Usage
 
 > [!NOTE]
@@ -63,6 +72,7 @@ for example:
 ```
 will produce:
 ![example 2](pics/!stonks_3.png)
+
 ```
 !stonks 14
 ```
@@ -82,6 +92,6 @@ will produce:
 
 ## 📝 TODO
 
-- [ ] Squash existing and future chore commits
+- [x] Squash existing and future chore commits
 - [ ] Combine CoinGecko and Polygon tickers
 - [ ] Overall code quality improvements
