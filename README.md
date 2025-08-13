@@ -5,7 +5,7 @@
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data.
+> Advanced Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple APIs.
 
 ## 🚀 Quick Start
 
@@ -26,6 +26,8 @@ cd stonks-bot && ./scripts/setup.sh
 ```bash
 DISCORD_TOKEN=your_discord_bot_token
 POLYGON=your_polygon_api_key
+ENVIRONMENT=development  # Optional: development/production
+LOG_LEVEL=INFO          # Optional: DEBUG/INFO/WARNING/ERROR
 ```
 
 **Scripts:**
@@ -45,52 +47,141 @@ The GitHub Actions workflow automatically updates the stonks images every hour. 
 
 This keeps the git history clean by consolidating all autopublish updates into single commits, preventing the repository from being cluttered with hundreds of individual chore commits.
 
+## 🌟 New Features
+
+### 🔗 **Multi-API Support**
+- **Polygon.io**: Stocks and major cryptocurrencies (requires API key)
+- **CoinGecko**: 1000+ cryptocurrencies (free, no API key required)
+- **Automatic Provider Selection**: Bot automatically chooses the best API based on ticker format
+
+### 📊 **Enhanced Chart Quality**
+- High-resolution charts (300 DPI)
+- Better error handling and user feedback
+- Improved chart styling and readability
+- Support for up to 10 tickers simultaneously
+
+### 🛡️ **Robust Error Handling**
+- Comprehensive error messages
+- Rate limiting protection
+- Network error recovery
+- Input validation
+
+### ⚙️ **Configuration Management**
+- Centralized configuration file
+- Environment-based settings
+- Easy customization without code changes
+
 ## 📖 Usage
 
 > [!NOTE]
-> The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available wihtout paying any subscriptions.
+> The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available without paying any subscriptions.
 
-To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
+To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in.
 
 > [!TIP]
-> You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
+> You can mix stock and cryptocurrency tickers in the same command! Use `X:SYMBOL` for stocks/Polygon data and `SYMBOL` for CoinGecko cryptocurrencies.
 
-Default settings (365 days, using tickers `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`):
+### **Default Settings (365 days)**
 ```
 !stonks
 ```
-will produce:
-![example 1](pics/!stonks.png)
+Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 
-Default settings with user-defined number of days:
+### **Custom Time Periods**
 ```
-!stonks <number of days>
+!stonks 3    # Last 3 days
+!stonks 14   # Last 2 weeks
+!stonks 30   # Last month
+!stonks 365  # Last year
 ```
-for example:
+
+### **Custom Ticker Combinations**
+
+**Stocks only:**
 ```
-!stonks 3
+!stonks 30 X:GOOG X:NVDA X:AAPL X:MSFT
 ```
-will produce:
-![example 2](pics/!stonks_3.png)
+
+**Cryptocurrencies only:**
+```
+!stonks 7 BTC ETH SOL ADA DOT
+```
+
+**Mixed portfolio:**
+```
+!stonks 90 X:BTCUSD ETH X:GOOG X:NVDA
+```
+
+### **Supported Ticker Formats**
+
+**Polygon.io (Stocks & Major Crypto):**
+- `X:BTCUSD` - Bitcoin
+- `X:ETHUSD` - Ethereum  
+- `X:GOOG` - Google
+- `X:AAPL` - Apple
+- `X:NVDA` - NVIDIA
+
+**CoinGecko (Cryptocurrencies):**
+- `BTC` - Bitcoin
+- `ETH` - Ethereum
+- `SOL` - Solana
+- `ADA` - Cardano
+- `DOT` - Polkadot
+- `MATIC` - Polygon
+- `UNI` - Uniswap
+- And 1000+ more!
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
+
+```bash
+python test_stonks.py
+```
+
+Tests cover:
+- Data provider functionality
+- Chart generation
+- Error handling
+- Configuration management
+- Input validation
+
+## 📁 Project Structure
 
 ```
-!stonks 14
+stonks-bot/
+├── stonks.py          # Core chart generation logic
+├── bot.py             # Discord bot implementation
+├── config.py          # Configuration management
+├── test_stonks.py     # Test suite
+├── github_actions.py  # CI/CD automation
+├── .github/           # GitHub Actions workflows
+├── pics/              # Generated charts
+└── scripts/           # Deployment scripts
 ```
-will produce:
-![example 3](pics/!stonks_14.png)
 
-Custom input:
-```
-!stonks <number of days> <tickers with spaces>
-```
-for example:
-```
-!stonks 365 X:BTCUSD GOOG NVDA AAPL
-```
-will produce:
-![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
+## 🔧 Development
+
+### **Code Quality Improvements**
+- **Type Hints**: Full Python type annotations
+- **Error Handling**: Comprehensive exception management
+- **Logging**: Structured logging throughout
+- **Documentation**: Detailed docstrings and comments
+- **Testing**: Unit tests with mocking
+- **Configuration**: Centralized, environment-aware config
+
+### **Architecture**
+- **Provider Pattern**: Abstract data providers for different APIs
+- **Singleton Pattern**: Efficient chart instance management
+- **Separation of Concerns**: Clear separation between data, logic, and presentation
+- **Async Support**: Full async/await support for Discord bot
 
 ## 📝 TODO
 
-- [ ] Combine CoinGecko and Polygon tickers
-- [ ] Overall code quality improvements
+- [x] Squash existing and future chore commits
+- [x] Combine CoinGecko and Polygon tickers
+- [x] Overall code quality improvements
+- [ ] Add more chart customization options
+- [ ] Implement caching for API responses
+- [ ] Add support for more time intervals (hours, weeks, months)
+- [ ] Create web dashboard for chart viewing
