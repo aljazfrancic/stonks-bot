@@ -22,6 +22,7 @@ jobs:
       - name: Update pics
         env:
           POLYGON: ${{ secrets.POLYGON }}
+          COIN_GECKO: ${{ secrets.COIN_GECKO }}
         run: |
           # Generate default chart (365 days with default tickers)
           python github_actions.py
