@@ -1,46 +1,87 @@
-# Purpose #
+# 📈 Stonks Bot
 
-The purpose of this Discord bot is to pull the prices of user-defined coins from CoinGecko for a user-defined number of last days and display them in a plot in a relative manner.
-The bot will also display prices for the first coin on the list.
-Bitcoin halvings inside the CoinGecko interval will also be shown as white vertical lines in case bitcoin is on the list.
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Discord.py](https://img.shields.io/badge/Discord.py-2.0+-green.svg)](https://discordpy.readthedocs.io/)
+[![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-# Usage #
+> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data.
+
+## 🚀 Quick Start
+
+**Deploy to Railway (Recommended):**
+1. Fork this repository → Get [Discord Bot Token](https://discord.com/developers/applications) & [Polygon.io API Key](https://polygon.io/)
+2. `railway up` → Set environment variables in Railway dashboard → Invite bot to server
+
+**Run Locally:**
+```bash
+git clone https://github.com/aljazfrancic/stonks-bot.git
+cd stonks-bot && ./scripts/setup.sh
+# Edit .env with your API keys, then: python bot.py
+```
+
+## 🔧 Setup
+
+**Environment Variables:**
+```bash
+DISCORD_TOKEN=your_discord_bot_token
+POLYGON=your_polygon_api_key
+```
+
+**Scripts:**
+- `./scripts/setup.sh` - Quick local setup
+- `./scripts/deploy.sh` - Deploy to Railway
+
+## 🤖 Deployment
+
+- [Deployment Guide](DEPLOYMENT.md)
+
+## 📖 Usage
+
+> [!NOTE]
+> The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available wihtout paying any subscriptions.
 
 To use the bot, send it a direct message on Discord or post in any channel the bot has access to on a Discord server that the bot is in. The message should conform to the following guidelines.
 
-Default settings (maximum number of days available on CoinGecko, using coins bitcoin, ethereum and monero):
+> [!TIP]
+> You can mix stock and cryptocurrency [tickers](https://polygon.io/quote/tickers) in the same command.
 
-    !kekw
-
-will produce something like:
-![example 1](pics/1.png)
+Default settings (365 days, using tickers `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`):
+```
+!stonks
+```
+will produce:
+![example 1](pics/!stonks.png)
 
 Default settings with user-defined number of days:
-
-    !kekw <number of days or max>
-
+```
+!stonks <number of days>
+```
 for example:
-
-    !kekw 200
-
-will produce something like:
-![example 2](pics/2.png)
+```
+!stonks 3
+```
+will produce:
+![example 2](pics/!stonks_3.png)
+```
+!stonks 14
+```
+will produce:
+![example 3](pics/!stonks_14.png)
 
 Custom input:
-
-    !kekw <number of days or max> <CoinGecko API ids with spaces>
-
+```
+!stonks <number of days> <tickers with spaces>
+```
 for example:
+```
+!stonks 365 X:BTCUSD GOOG NVDA AAPL
+```
+will produce:
+![example 4](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
 
-    !kekw 365 avalanche-2 chainlink monero bitcoin
+## 📝 TODO
 
-will produce something like:
-![example 3](pics/3.png)
-
-
-# TODO #
-
-* [ ] Allow the script to be easily run locally (without Discord integration)
-* [ ] Automatic deployment to AWS EC2 via GitHub Actions
-* [ ] Add stocks + ETFs
-* [ ] Overall code quality improvements
+- [ ] Squash existing and future chore commits
+- [ ] Combine CoinGecko and Polygon tickers
+- [ ] Overall code quality improvements
