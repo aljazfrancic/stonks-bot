@@ -26,15 +26,12 @@ jobs:
         run: |
           # Generate default chart (365 days with default tickers)
           python github_actions.py
-          sleep 1m # pause because of API restrictions
           
           # Generate 3-day chart with default tickers
           python github_actions.py 3
-          sleep 1m
           
           # Generate 14-day chart with default tickers
           python github_actions.py 14
-          sleep 1m
 
           # BTC and Major Stocks (using reliable Polygon tickers)
           python github_actions.py 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
