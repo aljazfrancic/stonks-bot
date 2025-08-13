@@ -95,9 +95,10 @@ class PolygonProvider(DataProvider):
         if not data.get("results"):
             raise StonksError(ERROR_MESSAGES["no_data"])
         
-        results = np.array(data["results"])
-        prices = results["c"]
-        timestamps = results["t"]
+        # Extract data before converting to numpy arrays
+        results = data["results"]
+        prices = np.array([result["c"] for result in results])
+        timestamps = np.array([result["t"] for result in results])
         
         # Convert timestamps to readable dates
         readable_dates = np.array([
