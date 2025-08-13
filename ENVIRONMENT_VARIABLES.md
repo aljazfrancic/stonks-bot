@@ -1,8 +1,8 @@
-# Environment Variables for Stonks Bot
+# 🔧 Environment Variables for Stonks Bot
 
 This document lists all the environment variables needed to run the Stonks Bot on Railway.
 
-## Required Environment Variables
+## 📋 Required Environment Variables
 
 ### 1. DISCORD_TOKEN
 - **Description**: Your Discord bot token from the Discord Developer Portal
@@ -21,7 +21,7 @@ This document lists all the environment variables needed to run the Stonks Bot o
   3. Get your API key from the dashboard
 - **Example**: `POLYGON=your_polygon_api_key_here`
 
-## Optional Environment Variables
+## 🔧 Optional Environment Variables
 
 ### 3. LOG_LEVEL
 - **Description**: Logging level for the bot
@@ -35,7 +35,7 @@ This document lists all the environment variables needed to run the Stonks Bot o
 - **Default**: development
 - **Example**: `ENVIRONMENT=production`
 
-## Setting Environment Variables in Railway
+## 🚀 Setting Environment Variables in Railway
 
 ### Option 1: Railway Dashboard (Recommended)
 1. Go to your Railway project dashboard
@@ -104,7 +104,7 @@ LOG_LEVEL = "INFO"
 ENVIRONMENT = "production"
 ```
 
-## Quick Start with setup_railway.py
+## ⚡ Quick Start with setup_railway.py
 
 ### Step 1: Create .env File
 Create a `.env` file in your project root:
@@ -127,7 +127,7 @@ The script will output:
 - **Dashboard instructions** (if you prefer web interface)
 - **Security notes** and **next steps**
 
-## Security Notes
+## 🔒 Security Notes
 
 - **Never commit your .env file** to version control
 - **Use Railway's built-in environment variable management** for production
@@ -135,7 +135,7 @@ The script will output:
 - **Use different tokens** for development and production environments
 - **The setup script masks sensitive values** for security
 
-## Testing Environment Variables
+## 🧪 Testing Environment Variables
 
 After setting the environment variables, you can test them by:
 
@@ -143,7 +143,7 @@ After setting the environment variables, you can test them by:
 2. **Running locally** with a .env file (for development only)
 3. **Checking the bot's status** in Discord
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 - **Bot not responding**: Check if DISCORD_TOKEN is correct
 - **No stock data**: Verify POLYGON API key is valid

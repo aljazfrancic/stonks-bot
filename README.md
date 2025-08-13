@@ -37,6 +37,7 @@ LOG_LEVEL=INFO          # Optional: DEBUG/INFO/WARNING/ERROR
 ## 🤖 Deployment
 
 - [Deployment Guide](DEPLOYMENT.md)
+- [Environment Variables Guide](ENVIRONMENT_VARIABLES.md)
 
 ## 🔄 CI/CD Behavior
 
@@ -47,7 +48,7 @@ The GitHub Actions workflow automatically updates the stonks images every hour. 
 
 This keeps the git history clean by consolidating all autopublish updates into single commits, preventing the repository from being cluttered with hundreds of individual chore commits.
 
-## 🌟 New Features
+## 🌟 Features
 
 ### 🔗 **Multi-API Support**
 - **Polygon.io**: Stocks and major cryptocurrencies (requires API key)
@@ -85,7 +86,7 @@ To use the bot, send it a direct message on Discord or post in any channel the b
 ```
 !stonks
 ```
-Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
+Uses default mixed portfolio: `BTC`, `ETH`, `XMR`, `AVAX`
 
 ![Default 365-day chart](pics/!stonks.png)
 
@@ -107,11 +108,11 @@ Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 
 **BTC and Major Stocks Portfolio (365 days):**
 ```
-!stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
+!stonks 365 BTC X:GOOG X:NVDA X:AAPL
 ```
 This combination showcases Bitcoin alongside major tech stocks for a comprehensive view of tech and crypto markets.
 
-![BTC and Stocks Portfolio](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
+![BTC and Stocks Portfolio](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL.png)
 
 ### **Custom Ticker Combinations**
 

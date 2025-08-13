@@ -2,7 +2,8 @@
 
 Complete guide for deploying the Stonks Bot on Railway.
 
-## Table of Contents
+## 📋 Table of Contents
+
 - [Prerequisites](#prerequisites)
 - [Quick Deploy](#quick-deploy)
 - [Manual Deploy](#manual-deploy)
@@ -16,7 +17,7 @@ Complete guide for deploying the Stonks Bot on Railway.
 - [Cost Considerations](#cost-considerations)
 - [Additional Resources](#additional-resources)
 
-## Prerequisites
+## ✅ Prerequisites
 
 Before you begin, make sure you have:
 
@@ -25,7 +26,7 @@ Before you begin, make sure you have:
 - ✅ [Polygon.io API key](https://polygon.io/) (free tier available)
 - ✅ Your bot code in a Git repository
 
-## Quick Deploy
+## ⚡ Quick Deploy
 
 1. **Fork this repository** to your GitHub account
 2. **Connect to Railway**:
@@ -37,7 +38,7 @@ Before you begin, make sure you have:
    - `POLYGON`: Your Polygon.io API key
 4. **Deploy** - Railway will automatically build and deploy your bot!
 
-## Manual Deploy
+## 🛠️ Manual Deploy
 
 ### Option A: Deploy via Railway Dashboard
 
@@ -86,7 +87,7 @@ Before you begin, make sure you have:
    railway up
    ```
 
-## Configure Discord Bot
+## 🤖 Configure Discord Bot
 
 1. **Create Discord Application**
    - Go to [Discord Developer Portal](https://discord.com/developers/applications)
@@ -111,7 +112,7 @@ Before you begin, make sure you have:
    - Select the permissions mentioned above
    - Use the generated URL to invite the bot to your server
 
-## Verify Deployment
+## ✅ Verify Deployment
 
 1. **Check Railway Logs**
    - In Railway dashboard, go to your deployment
@@ -126,7 +127,7 @@ Before you begin, make sure you have:
    !stonks 30 X:BTCUSD GOOG NVDA
    ```
 
-## Monitor and Maintain
+## 📊 Monitor and Maintain
 
 ### Railway Dashboard Monitoring
 - **Logs**: Monitor application logs in real-time
@@ -141,7 +142,7 @@ Before you begin, make sure you have:
 - Railway automatically scales based on traffic
 - For high-traffic bots, consider upgrading to a paid plan
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues & Solutions
 
@@ -177,7 +178,7 @@ If you're still experiencing issues:
 3. **Ensure your Discord bot** has the required permissions
 4. **Open an issue** on GitHub with detailed error information
 
-## Security Best Practices
+## 🔒 Security Best Practices
 
 ### API Key Security
 
@@ -202,7 +203,7 @@ If you're still experiencing issues:
 - **Server restrictions**: Limit bot access to trusted servers
 - **Token protection**: Keep bot tokens secure and private
 
-## Cost Considerations
+## 💰 Cost Considerations
 
 ### Free Tier Limits
 
@@ -218,7 +219,7 @@ If you're still experiencing issues:
 - **Monitor Polygon.io usage** to stay within free limits
 - **Consider paid plans** only for high-traffic production bots
 
-## Additional Resources
+## 📚 Additional Resources
 
 ### Documentation
 - [Railway Documentation](https://docs.railway.app/) - Complete Railway deployment guide
