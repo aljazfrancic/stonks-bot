@@ -84,19 +84,25 @@ class PolygonProvider(DataProvider):
         
         print(f"Fetching data for {ticker} from Polygon.io...")
         
+        # Remove X: prefix for Polygon API calls
+        clean_ticker = ticker.replace("X:", "")
+        
         end_time = int(time.time() * 1000)
         start_time = end_time - days * 24 * 60 * 60 * 1000
         interval = "day" if days > 60 else "minute"
         
-        url = f"{POLYGON_BASE_URL}/ticker/{ticker}/range/1/{interval}/{start_time}/{end_time}?limit=50000&apiKey={self.api_key}"
+        url = f"{POLYGON_BASE_URL}/ticker/{clean_ticker}/range/1/{interval}/{start_time}/{end_time}?limit=50000&apiKey={self.api_key}"
         
         data = self._make_request(url)
         
         if not data.get("results"):
+            print(f"Polygon API response for {clean_ticker}: {data}")
             raise StonksError(ERROR_MESSAGES["no_data"])
         
         # Extract data before converting to numpy arrays
         results = data["results"]
+        print(f"Successfully fetched {len(results)} data points for {clean_ticker}")
+        
         prices = np.array([result["c"] for result in results])
         timestamps = np.array([result["t"] for result in results])
         
