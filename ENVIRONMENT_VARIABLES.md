@@ -62,7 +62,34 @@ railway variables set LOG_LEVEL=INFO
 railway variables set ENVIRONMENT=production
 ```
 
-### Option 3: Railway.toml (if using)
+### Option 3: Automated Setup with setup_railway.py (Easiest)
+
+We've created a helpful script that automates the setup process:
+
+```bash
+# Run the setup script (requires Python)
+python setup_railway.py
+```
+
+**What the script does:**
+- ✅ **Reads your local .env file** automatically
+- ✅ **Generates Railway CLI commands** with masked sensitive values
+- ✅ **Provides dashboard instructions** with your actual variables
+- ✅ **Ensures security** by masking tokens and API keys
+- ✅ **Guides you through** the entire setup process
+
+**Prerequisites:**
+1. **Create a .env file** in your project root with:
+   ```
+   DISCORD_TOKEN=your_actual_discord_token
+   POLYGON=your_actual_polygon_api_key
+   LOG_LEVEL=INFO
+   ENVIRONMENT=production
+   ```
+2. **Run the script**: `python setup_railway.py`
+3. **Follow the generated instructions**
+
+### Option 4: Railway.toml (if using)
 ```toml
 [build]
 builder = "nixpacks"
@@ -77,12 +104,36 @@ LOG_LEVEL = "INFO"
 ENVIRONMENT = "production"
 ```
 
+## Quick Start with setup_railway.py
+
+### Step 1: Create .env File
+Create a `.env` file in your project root:
+```bash
+# .env
+DISCORD_TOKEN=your_discord_bot_token_here
+POLYGON=your_polygon_api_key_here
+LOG_LEVEL=INFO
+ENVIRONMENT=production
+```
+
+### Step 2: Run Setup Script
+```bash
+python setup_railway.py
+```
+
+### Step 3: Follow Generated Instructions
+The script will output:
+- **Railway CLI commands** (if you prefer CLI)
+- **Dashboard instructions** (if you prefer web interface)
+- **Security notes** and **next steps**
+
 ## Security Notes
 
 - **Never commit your .env file** to version control
 - **Use Railway's built-in environment variable management** for production
 - **Rotate your API keys regularly** for security
 - **Use different tokens** for development and production environments
+- **The setup script masks sensitive values** for security
 
 ## Testing Environment Variables
 
@@ -98,3 +149,5 @@ After setting the environment variables, you can test them by:
 - **No stock data**: Verify POLYGON API key is valid
 - **Cryptocurrency data works**: CoinGecko doesn't require an API key
 - **Logs not showing**: Check LOG_LEVEL setting
+- **Script not working**: Ensure Python is installed and .env file exists
+- **Permission errors**: Make sure your .env file is readable
