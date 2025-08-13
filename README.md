@@ -87,6 +87,8 @@ To use the bot, send it a direct message on Discord or post in any channel the b
 ```
 Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 
+![Default 365-day chart](pics/!stonks.png)
+
 ### **Custom Time Periods**
 ```
 !stonks 3    # Last 3 days
@@ -94,6 +96,12 @@ Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 !stonks 30   # Last month
 !stonks 365  # Last year
 ```
+
+**3-day chart:**
+![3-day chart](pics/!stonks_3.png)
+
+**14-day chart:**
+![14-day chart](pics/!stonks_14.png)
 
 ### **Custom Ticker Combinations**
 
@@ -111,6 +119,9 @@ Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 ```
 !stonks 90 X:BTCUSD ETH X:GOOG X:NVDA
 ```
+
+**Example mixed portfolio (365 days with BTC, GOOG, NVDA, AAPL):**
+![Mixed portfolio chart](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
 
 ### **Supported Ticker Formats**
 
