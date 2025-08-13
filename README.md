@@ -92,6 +92,5 @@ will produce:
 
 ## 📝 TODO
 
-- [x] Squash existing and future chore commits
 - [ ] Combine CoinGecko and Polygon tickers
 - [ ] Overall code quality improvements
