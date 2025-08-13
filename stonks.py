@@ -12,7 +12,7 @@ import os
 import sys
 import urllib3
 from typing import List, Tuple, Optional, Union
-from urllib3.exceptions import HTTPError, URLError
+from urllib3.exceptions import HTTPError, RequestError, TimeoutError
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
@@ -63,7 +63,7 @@ class DataProvider:
                 raise StonksError(f"API request failed with status {response.status}")
             
             return json.loads(response.data)
-        except (HTTPError, URLError) as e:
+        except (HTTPError, RequestError, TimeoutError) as e:
             raise StonksError(f"Network error: {str(e)}")
         except json.JSONDecodeError as e:
             raise StonksError(f"Invalid JSON response: {str(e)}")
