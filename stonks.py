@@ -199,12 +199,20 @@ class StonksChart:
                 print(f"Error fetching data for {ticker}: {e}")
                 continue
         
-        if not all_prices:
+        if len(all_prices) == 0:
             raise StonksError("No data could be fetched for any ticker")
         
         # Find the oldest timestamp to align all data
-        oldest_timestamps = min(all_timestamps, key=lambda x: x[0])
-        oldest_readable_dates = all_readable_dates[all_timestamps.index(oldest_timestamps)]
+        # Find the array with the earliest timestamp
+        min_index = 0
+        min_timestamp = float('inf')
+        for i, timestamps in enumerate(all_timestamps):
+            if len(timestamps) > 0 and timestamps[0] < min_timestamp:
+                min_timestamp = timestamps[0]
+                min_index = i
+        
+        oldest_timestamps = all_timestamps[min_index]
+        oldest_readable_dates = all_readable_dates[min_index]
         
         # Create the chart
         fig = self._create_matplotlib_chart(
