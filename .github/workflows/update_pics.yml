@@ -86,6 +86,6 @@ jobs:
           echo "Successfully amended the last chore commit"
       - name: Create new commit if not a chore commit
         if: steps.check-commit.outputs.is_chore == 'false'
-        uses: actions-js/push@v1
+        uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
