@@ -103,6 +103,16 @@ Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 **14-day chart:**
 ![14-day chart](pics/!stonks_14.png)
 
+### **Featured Chart Examples**
+
+**BTC and Major Stocks Portfolio (365 days):**
+```
+!stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
+```
+This combination showcases Bitcoin alongside major tech stocks for a comprehensive view of tech and crypto markets.
+
+![BTC and Stocks Portfolio](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
+
 ### **Custom Ticker Combinations**
 
 **Stocks only:**
@@ -119,9 +129,6 @@ Uses default mixed portfolio: `X:BTCUSD`, `X:ETHUSD`, `X:XMRUSD`, `X:AVAXUSD`
 ```
 !stonks 90 X:BTCUSD ETH X:GOOG X:NVDA
 ```
-
-**Example mixed portfolio (365 days with BTC, GOOG, NVDA, AAPL):**
-![Mixed portfolio chart](pics/!stonks_365_X-BTCUSD_GOOG_NVDA_AAPL.png)
 
 ### **Supported Ticker Formats**
 
