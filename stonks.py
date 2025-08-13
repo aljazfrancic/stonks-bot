@@ -25,7 +25,7 @@ load_dotenv()
 # Configuration
 plt.style.use("dark_background")
 COMMAND_PREFIX = "!stonks"
-DEFAULT_TICKERS = ["X:BTCUSD", "X:ETHUSD", "X:XMRUSD", "X:AVAXUSD"]
+DEFAULT_TICKERS = ["BTC", "ETH", "XMR", "AVAX"]
 
 # API Configuration
 POLYGON_BASE_URL = "https://api.polygon.io/v2/aggs"
