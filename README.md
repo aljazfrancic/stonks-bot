@@ -91,7 +91,3 @@ railway up
 ```bash
 python test_stonks.py
 ```
-
----
-
-**Made with ❤️ by the Discord.py community**
