@@ -121,7 +121,7 @@ Before you begin, make sure you have:
 
 2. **Test Bot Commands**
    In your Discord server, try these commands:
-   ```
+   ```text
    !stonks
    !stonks 7
    !stonks 30 X:BTCUSD GOOG NVDA

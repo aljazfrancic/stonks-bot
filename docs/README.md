@@ -20,7 +20,7 @@ Welcome to the Stonks Bot documentation! This folder contains comprehensive guid
 
 ## 📁 Project Structure
 
-```
+```text
 stonks-bot/
 ├── stonks.py          # Core chart generation logic
 ├── bot.py             # Discord bot implementation

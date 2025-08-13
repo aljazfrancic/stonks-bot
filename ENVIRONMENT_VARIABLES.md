@@ -80,7 +80,7 @@ python setup_railway.py
 
 **Prerequisites:**
 1. **Create a .env file** in your project root with:
-   ```
+   ```bash
    DISCORD_TOKEN=your_actual_discord_token
    POLYGON=your_actual_polygon_api_key
    LOG_LEVEL=INFO
