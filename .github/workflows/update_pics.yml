@@ -57,33 +57,13 @@ jobs:
           git status --porcelain
       - name: Amend last commit if it's a chore commit
         if: steps.check-commit.outputs.is_chore == 'true'
-        run: |
-          # Configure git user for CI
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Check if there are actually changes to commit
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo "No changes detected, skipping commit"
-            exit 0
-          fi
-          
-          # Add all changes
-          git add -A
-          
-          # Show what will be committed
-          echo "Changes to be committed:"
-          git status --porcelain
-          
-          # Amend the last commit without changing the message
-          git commit --amend --no-edit
-          
-          # Force push with lease for safety
-          git push --force-with-lease origin main
-          
-          echo "Successfully amended the last chore commit"
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          amend: true
       - name: Create new commit if not a chore commit
         if: steps.check-commit.outputs.is_chore == 'false'
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
