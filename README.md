@@ -52,7 +52,7 @@ cd stonks-bot && ./scripts/setup.sh
 ## 🎯 Usage
 
 ```bash
-!stonks                    # Default portfolio (BTC, ETH, XMR, AVAX)
+!stonks                   # Default portfolio (BTC, ETH, XMR, AVAX)
 !stonks 7                 # 7-day chart
 !stonks 30 BTC ETH        # 30-day BTC/ETH chart
 !stonks 365 X:AAPL X:MSFT # 1-year Apple/Microsoft chart
