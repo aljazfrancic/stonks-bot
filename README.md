@@ -31,7 +31,7 @@ python bot.py
 
 ## 📊 Example Charts
 
-> **Note:** Charts are automatically updated via GitHub Actions every hour.
+> **Note:** These charts are automagically updated via GitHub Actions every hour.
 
 ### Default Portfolio (365 days)
 ```text
