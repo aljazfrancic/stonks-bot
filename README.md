@@ -31,7 +31,7 @@ python bot.py
 
 ## 📊 Example Charts
 
-> **Note:** These charts are automatically updated via GitHub Actions every hour.
+> **Note:** These charts are automagically updated via GitHub Actions every hour.
 
 ### **Default Portfolio (365 days):**
 ```text
@@ -51,7 +51,7 @@ python bot.py
 ```
 ![14-Day Chart](pics/!stonks_14.png)
 
-### **🚂 BTC and Major Tech Stocks (365 days):**
+### ** BTC and Major Tech Stocks (365 days):**
 ```text
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
