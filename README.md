@@ -5,7 +5,7 @@
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Advanced Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple APIs.
+> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple APIs.
 
 ## ⚡ Quick Start
 
@@ -17,7 +17,7 @@
 ```bash
 git clone https://github.com/aljazfrancic/stonks-bot.git
 cd stonks-bot && ./scripts/setup.sh
-# Edit .env with your API keys, then: python bot.py
+# Create/Edit .env with your API keys, then: python bot.py
 ```
 
 ## 📊 Demo Charts
