@@ -22,9 +22,15 @@ if [ ! -f .env ]; then
     echo "🔧 Creating .env file..."
     cat > .env << EOF
 # Discord Bot Configuration
+# Get your bot token from: https://discord.com/developers/applications
 DISCORD_TOKEN=your_discord_bot_token_here
 
+# CoinGecko API Configuration
+# Get your API key from: https://www.coingecko.com/en/api
+COIN_GECKO=your_coingecko_api_key_here
+
 # Polygon.io API Configuration
+# Get your API key from: https://polygon.io/
 POLYGON=your_polygon_api_key_here
 EOF
     echo "⚠️  Please edit .env file with your actual API keys"
@@ -37,9 +43,15 @@ if [ ! -f .env.example ]; then
     echo "📝 Creating .env.example file..."
     cat > .env.example << EOF
 # Discord Bot Configuration
+# Get your bot token from: https://discord.com/developers/applications
 DISCORD_TOKEN=your_discord_bot_token_here
 
+# CoinGecko API Configuration
+# Get your API key from: https://www.coingecko.com/en/api
+COIN_GECKO=your_coingecko_api_key_here
+
 # Polygon.io API Configuration
+# Get your API key from: https://polygon.io/
 POLYGON=your_polygon_api_key_here
 EOF
 fi
