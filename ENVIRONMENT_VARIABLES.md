@@ -6,6 +6,7 @@ This document lists all the environment variables needed to run the Stonks Bot o
 
 ### 1. DISCORD_TOKEN
 - **Description**: Your Discord bot token from the Discord Developer Portal
+- **Required**: Yes
 - **How to get**: 
   1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
   2. Create a new application or select existing one
@@ -15,21 +16,36 @@ This document lists all the environment variables needed to run the Stonks Bot o
 
 ### 2. POLYGON
 - **Description**: Your Polygon.io API key for stock and cryptocurrency data
+- **Required**: Yes (for stock queries)
 - **How to get**:
   1. Go to [Polygon.io](https://polygon.io/)
-  2. Sign up for an account
+  2. Sign up for an account (free tier available)
   3. Get your API key from the dashboard
 - **Example**: `POLYGON=your_polygon_api_key_here`
 
 ## 🔧 Optional Environment Variables
 
-### 3. LOG_LEVEL
+### 3. COINGECKO / COIN_GECKO
+- **Description**: CoinGecko API key for higher cryptocurrency rate limits
+- **Required**: No (CoinGecko works without key, but with lower limits)
+- **Note**: The bot accepts both `COINGECKO` and `COIN_GECKO` variable names
+- **How to get**:
+  1. Go to [CoinGecko API](https://www.coingecko.com/en/api)
+  2. Sign up for a free account
+  3. Get your API key from the dashboard
+- **Benefits**: 
+  - Higher rate limits for crypto data
+  - Better API performance
+  - Access to premium features
+- **Example**: `COINGECKO=your_coingecko_api_key_here` or `COIN_GECKO=your_coingecko_api_key_here`
+
+### 4. LOG_LEVEL
 - **Description**: Logging level for the bot
 - **Values**: DEBUG, INFO, WARNING, ERROR
 - **Default**: INFO
 - **Example**: `LOG_LEVEL=INFO`
 
-### 4. ENVIRONMENT
+### 5. ENVIRONMENT
 - **Description**: Environment the bot is running in
 - **Values**: development, production
 - **Default**: development
@@ -58,6 +74,7 @@ railway link
 # Set environment variables
 railway variables set DISCORD_TOKEN=your_token_here
 railway variables set POLYGON=your_api_key_here
+railway variables set COINGECKO=your_coingecko_api_key_here
 railway variables set LOG_LEVEL=INFO
 railway variables set ENVIRONMENT=production
 ```
@@ -83,6 +100,7 @@ python setup_railway.py
    ```bash
    DISCORD_TOKEN=your_actual_discord_token
    POLYGON=your_actual_polygon_api_key
+   COINGECKO=your_coingecko_api_key
    LOG_LEVEL=INFO
    ENVIRONMENT=production
    ```
@@ -100,6 +118,7 @@ startCommand = "python bot.py"
 [deploy.env]
 DISCORD_TOKEN = "your_token_here"
 POLYGON = "your_api_key_here"
+COINGECKO = "your_coingecko_key_here"
 LOG_LEVEL = "INFO"
 ENVIRONMENT = "production"
 ```
@@ -112,6 +131,7 @@ Create a `.env` file in your project root:
 # .env
 DISCORD_TOKEN=your_discord_bot_token_here
 POLYGON=your_polygon_api_key_here
+COINGECKO=your_coingecko_api_key_here
 LOG_LEVEL=INFO
 ENVIRONMENT=production
 ```
@@ -147,7 +167,9 @@ After setting the environment variables, you can test them by:
 
 - **Bot not responding**: Check if DISCORD_TOKEN is correct
 - **No stock data**: Verify POLYGON API key is valid
-- **Cryptocurrency data works**: CoinGecko doesn't require an API key
+- **Crypto rate limits**: Add COINGECKO API key for higher limits
+- **Variable name confusion**: Use either `COINGECKO` or `COIN_GECKO` (both work)
+- **Cryptocurrency data works without key**: CoinGecko free tier works without API key
 - **Logs not showing**: Check LOG_LEVEL setting
 - **Script not working**: Ensure Python is installed and .env file exists
 - **Permission errors**: Make sure your .env file is readable

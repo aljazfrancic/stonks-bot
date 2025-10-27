@@ -127,6 +127,10 @@ class CoinGeckoProvider(DataProvider):
         
         url = f"{COINGECKO_BASE_URL}/coins/{coin_id}/market_chart?vs_currency=usd&days={days}"
         
+        # Add API key if available
+        if self.api_key:
+            url += f"&x_cg_demo_api_key={self.api_key}"
+        
         data = self._make_request(url)
         
         if not data.get("prices"):
@@ -174,7 +178,9 @@ class StonksChart:
     
     def __init__(self):
         self.polygon_provider = PolygonProvider(os.getenv("POLYGON"))
-        self.coingecko_provider = CoinGeckoProvider()
+        # Try both COINGECKO and COIN_GECKO environment variables
+        coingecko_api_key = os.getenv("COINGECKO") or os.getenv("COIN_GECKO")
+        self.coingecko_provider = CoinGeckoProvider(coingecko_api_key)
     
     def _get_data_provider(self, ticker: str) -> DataProvider:
         """Determine which data provider to use based on ticker format."""

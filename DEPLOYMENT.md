@@ -24,6 +24,7 @@ Before you begin, make sure you have:
 - ✅ [Railway account](https://railway.app/)
 - ✅ [Discord application and bot token](https://discord.com/developers/applications)
 - ✅ [Polygon.io API key](https://polygon.io/) (free tier available)
+- ✅ [CoinGecko API key](https://www.coingecko.com/en/api) (optional - free tier available)
 - ✅ Your bot code in a Git repository
 
 ## ⚡ Quick Deploy
@@ -36,6 +37,7 @@ Before you begin, make sure you have:
 3. **Set environment variables** in Railway dashboard:
    - `DISCORD_TOKEN`: Your Discord bot token
    - `POLYGON`: Your Polygon.io API key
+   - `COINGECKO`: Your CoinGecko API key (optional)
 4. **Deploy** - Railway will automatically build and deploy your bot!
 
 ## 🛠️ Manual Deploy
@@ -51,8 +53,9 @@ Before you begin, make sure you have:
 2. **Configure Environment Variables**
    - In your Railway project dashboard, go to the "Variables" tab
    - Add the following environment variables:
-     - `DISCORD_TOKEN`: Your Discord bot token
-     - `POLYGON`: Your Polygon.io API key
+     - `DISCORD_TOKEN`: Your Discord bot token (required)
+     - `POLYGON`: Your Polygon.io API key (required for stocks)
+     - `COINGECKO`: Your CoinGecko API key (optional - for higher crypto limits)
 
 3. **Configure Build Settings**
    - Railway will automatically detect this as a Python project
@@ -80,6 +83,7 @@ Before you begin, make sure you have:
    ```bash
    railway variables --set "DISCORD_TOKEN=your_discord_bot_token_here"
    railway variables --set "POLYGON=your_polygon_api_key_here"
+   railway variables --set "COINGECKO=your_coingecko_api_key_here"
    ```
 
 5. **Deploy**
@@ -149,7 +153,8 @@ Before you begin, make sure you have:
 | Issue | Cause | Solution |
 |-------|-------|----------|
 | **Bot Not Responding** | Invalid token or permissions | Check Railway logs, verify `DISCORD_TOKEN`, ensure bot has proper permissions |
-| **API Rate Limits** | Polygon.io free tier limits | Consider upgrading to paid plan for higher limits |
+| **API Rate Limits** | Polygon.io free tier limits | Consider upgrading to paid plan or add `COINGECKO` key for crypto |
+| **Crypto Rate Limits** | CoinGecko free tier limits | Add `COINGECKO` API key for higher limits |
 | **Build Failures** | Missing dependencies | Check `requirements.txt`, ensure all files are committed |
 | **Environment Variables Not Set** | Missing or incorrect variables | Verify variables in Railway dashboard, check case sensitivity |
 
@@ -211,6 +216,7 @@ If you're still experiencing issues:
 |---------|-----------|------------|
 | **Railway** | Limited usage, suitable for development | $5/month for more resources |
 | **Polygon.io** | 5 API calls per minute | $29/month for higher limits |
+| **CoinGecko** | 30 API calls per minute (without key) | Free tier with key: 50 calls/min |
 | **Discord** | Unlimited bot usage | Free for all users |
 
 ### Cost Optimization Tips

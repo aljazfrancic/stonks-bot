@@ -5,25 +5,33 @@
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Discord bot that creates price comparison charts for cryptocurrencies and stocks using real-time market data from multiple APIs.
+> Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
 
 ## ⚡ Quick Start
 
-**Deploy to Railway (Recommended):**
-1. Fork this repository → Get [Discord Bot Token](https://discord.com/developers/applications) & [Polygon.io API Key](https://polygon.io/)
-2. `railway up` → Set environment variables in Railway dashboard → Invite bot to server
+### Deploy to Railway (Recommended)
+1. Fork this repository
+2. Get your API keys:
+   - [Discord Bot Token](https://discord.com/developers/applications) (required)
+   - [Polygon.io API Key](https://polygon.io/) (required for stocks, free tier available)
+   - [CoinGecko API Key](https://www.coingecko.com/en/api) (optional - for higher crypto rate limits)
+3. Run `railway up` and set environment variables in Railway dashboard
+4. Invite bot to your Discord server
 
-**Run Locally:**
+### Run Locally
 ```bash
 git clone https://github.com/aljazfrancic/stonks-bot.git
 cd stonks-bot && ./scripts/setup.sh
-# Create/Edit .env with your API keys, then: python bot.py
+# Edit .env with your API keys:
+# DISCORD_TOKEN=your_token
+# POLYGON=your_polygon_key
+# COINGECKO=your_coingecko_key
+python bot.py
 ```
 
-## 📊 Demo Charts
+## 📊 Example Charts
 
-> [!NOTE]
-> The following graphs are automagically updated via GitHub Actions, so we're looking at the latest data available without paying any subscriptions.
+> **Note:** These charts are automatically updated via GitHub Actions every hour.
 
 ### **Default Portfolio (365 days):**
 ```text
@@ -49,8 +57,9 @@ cd stonks-bot && ./scripts/setup.sh
 ```
 ![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
 
-## 🎯 Usage
+## 🎯 How to Use
 
+### Basic Commands
 ```bash
 !stonks                   # Default portfolio (BTC, ETH, XMR, AVAX)
 !stonks 7                 # 7-day chart
@@ -58,43 +67,77 @@ cd stonks-bot && ./scripts/setup.sh
 !stonks 365 X:AAPL X:MSFT # 1-year Apple/Microsoft chart
 ```
 
-**Ticker Formats:**
-- **Crypto**: `BTC`, `ETH`, `SOL` (CoinGecko - free tier available, API key recommended for higher limits)
-- **Stocks**: `X:AAPL`, `X:MSFT`, `X:GOOG` (Polygon.io - requires API key)
+### Supported Tickers
+- **Cryptocurrencies**: `BTC`, `ETH`, `SOL` (via CoinGecko)
+- **Stocks**: `X:AAPL`, `X:MSFT`, `X:GOOG` (via Polygon.io)
 
-**Time Periods:** 1 day to 1 year
-**Max Tickers:** Up to 10 simultaneously
-**Chart Quality:** High-resolution (300 DPI)
+## 🔧 Environment Setup
 
-## 🔧 Setup
+### Required Variables
 
-**Environment Variables:**
 ```bash
+# Discord Bot Token (required)
 DISCORD_TOKEN=your_discord_bot_token
+# Get from: https://discord.com/developers/applications
+
+# Polygon.io API Key (required for stocks)
 POLYGON=your_polygon_api_key
-COINGECKO=your_coingecko_api_key  # Optional: for higher rate limits
-ENVIRONMENT=development  # Optional: development/production
-LOG_LEVEL=INFO          # Optional: DEBUG/INFO/WARNING/ERROR
+# Get from: https://polygon.io/ (free tier available)
 ```
 
-**Prerequisites:**
-- Python 3.12+
-- Discord Bot Token
-- Polygon.io API Key (for stocks)
-- CoinGecko API Key (optional, for higher crypto rate limits)
-- Railway account (for deployment)
+### Optional Variables
 
-## 🚂 Deploy
+```bash
+# CoinGecko API Key (optional - for higher crypto rate limits)
+COINGECKO=your_coingecko_api_key
+# Get from: https://www.coingecko.com/en/api (free tier available)
+# Note: Also accepts COIN_GECKO variable name
 
-**Railway (Recommended):**
+# Environment setting (optional)
+ENVIRONMENT=development
+# Options: development, production
+
+# Logging level (optional)
+LOG_LEVEL=INFO
+# Options: DEBUG, INFO, WARNING, ERROR
+```
+
+### Get Your API Keys
+
+1. **Discord Bot Token** (required)
+   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
+   - Create a new application
+   - Navigate to "Bot" section
+   - Copy the token
+
+2. **Polygon.io API Key** (required for stocks)
+   - Go to [Polygon.io](https://polygon.io/)
+   - Sign up for a free account
+   - Get your API key from the dashboard
+
+3. **CoinGecko API Key** (optional - for higher crypto rate limits)
+   - Go to [CoinGecko API](https://www.coingecko.com/en/api)
+   - Sign up for a free account
+   - Get your API key for higher rate limits
+
+### Requirements
+- Python 3.12 or higher
+- Discord Bot Token (required)
+- Polygon.io API Key (required for stocks)
+- CoinGecko API Key (optional - for higher crypto rate limits)
+
+## 🚂 Deployment
+
+### Deploy with Railway (Recommended)
 ```bash
 railway login
 railway up
 ```
 
-**Manual Setup:** See [DEPLOYMENT.md](DEPLOYMENT.md)
+### Deploy Manually
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
-## 🧪 Testing
+## 🧪 Run Tests
 
 ```bash
 python test_stonks.py
@@ -102,22 +145,25 @@ python test_stonks.py
 
 ## 🌟 Features
 
-- **Multi-API Support**: Polygon.io (stocks) + CoinGecko (crypto)
-- **Automatic Provider Selection**: Bot chooses best API based on ticker format
-- **Robust Error Handling**: Comprehensive error messages and rate limiting protection
-- **CI/CD Automation**: GitHub Actions updates charts every hour
-- **High-Quality Charts**: Professional 300 DPI output with improved styling
+- **Dual API Support**: Polygon.io for stocks + CoinGecko for crypto
+- **Smart Provider Selection**: Automatically chooses the best API
+- **Error Handling**: Clear error messages and rate limit protection
+- **Auto-Updates**: Charts update every hour via GitHub Actions
+- **High Quality**: Professional 300 DPI chart output
 
 ## 🔍 Troubleshooting
 
-- **"No data available"**: Check ticker symbol or try different time period
-- **"Rate limited"**: Wait a moment and try again
-- **"Invalid ticker"**: Verify ticker format (X:SYMBOL for stocks, SYMBOL for crypto)
-- **Bot not responding**: Check Railway logs, verify DISCORD_TOKEN
+| Issue | Solution |
+|-------|----------|
+| "No data available" | Check ticker symbol or try a different time period |
+| "Rate limited" | Wait a moment and try again |
+| "Invalid ticker" | Use `X:SYMBOL` for stocks, `SYMBOL` for crypto |
+| Bot not responding | Check Railway logs and verify `DISCORD_TOKEN` |
 
-## 📚 Resources
+## 📚 Documentation
 
 - [Discord.py Documentation](https://discordpy.readthedocs.io/)
 - [Polygon.io API Docs](https://polygon.io/docs/)
 - [CoinGecko API Docs](https://www.coingecko.com/en/api/documentation)
 - [Railway Documentation](https://docs.railway.app/)
+- [Deployment Guide](DEPLOYMENT.md)
