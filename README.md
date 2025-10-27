@@ -31,27 +31,27 @@ python bot.py
 
 ## 📊 Example Charts
 
-> **Note:** These charts are automatically updated via GitHub Actions every hour.
+> **Note:** Charts are automatically updated via GitHub Actions every hour.
 
-### **Default Portfolio (365 days):**
+### Default Portfolio (365 days)
 ```text
 !stonks
 ```
 ![Default Portfolio](pics/!stonks.png)
 
-### **Short-term Analysis (3 days):**
+### Short-term Analysis (3 days)
 ```text
 !stonks 3
 ```
 ![3-Day Chart](pics/!stonks_3.png)
 
-### **Medium-term Analysis (14 days):**
+### Medium-term Analysis (14 days)
 ```text
 !stonks 14
 ```
 ![14-Day Chart](pics/!stonks_14.png)
 
-### **🚂 BTC and Major Tech Stocks (365 days):**
+### BTC and Major Tech Stocks (365 days)
 ```text
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
@@ -71,73 +71,47 @@ python bot.py
 - **Cryptocurrencies**: `BTC`, `ETH`, `SOL` (via CoinGecko)
 - **Stocks**: `X:AAPL`, `X:MSFT`, `X:GOOG` (via Polygon.io)
 
-## 🔧 Environment Setup
+## 🔧 Configuration
 
-### Required Variables
+### Environment Variables
+
+**Required:**
+- `DISCORD_TOKEN` - Get from [Discord Developer Portal](https://discord.com/developers/applications)
+- `POLYGON` - Get from [Polygon.io](https://polygon.io/) (free tier available)
+
+**Optional:**
+- `COINGECKO` - Get from [CoinGecko API](https://www.coingecko.com/en/api) (for higher crypto rate limits)
+- `LOG_LEVEL` - Options: `DEBUG`, `INFO`, `WARNING`, `ERROR` (default: `INFO`)
+- `ENVIRONMENT` - Options: `development`, `production` (default: `development`)
 
 ```bash
-# Discord Bot Token (required)
+# .env example
 DISCORD_TOKEN=your_discord_bot_token
-# Get from: https://discord.com/developers/applications
-
-# Polygon.io API Key (required for stocks)
 POLYGON=your_polygon_api_key
-# Get from: https://polygon.io/ (free tier available)
+COINGECKO=your_coingecko_api_key  # Optional
+LOG_LEVEL=INFO                     # Optional
+ENVIRONMENT=production             # Optional
 ```
-
-### Optional Variables
-
-```bash
-# CoinGecko API Key (optional - for higher crypto rate limits)
-COINGECKO=your_coingecko_api_key
-# Get from: https://www.coingecko.com/en/api (free tier available)
-# Note: Also accepts COIN_GECKO variable name
-
-# Environment setting (optional)
-ENVIRONMENT=development
-# Options: development, production
-
-# Logging level (optional)
-LOG_LEVEL=INFO
-# Options: DEBUG, INFO, WARNING, ERROR
-```
-
-### Get Your API Keys
-
-1. **Discord Bot Token** (required)
-   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
-   - Create a new application
-   - Navigate to "Bot" section
-   - Copy the token
-
-2. **Polygon.io API Key** (required for stocks)
-   - Go to [Polygon.io](https://polygon.io/)
-   - Sign up for a free account
-   - Get your API key from the dashboard
-
-3. **CoinGecko API Key** (optional - for higher crypto rate limits)
-   - Go to [CoinGecko API](https://www.coingecko.com/en/api)
-   - Sign up for a free account
-   - Get your API key for higher rate limits
 
 ### Requirements
 - Python 3.12 or higher
-- Discord Bot Token (required)
-- Polygon.io API Key (required for stocks)
-- CoinGecko API Key (optional - for higher crypto rate limits)
+- Discord Bot Token
+- Polygon.io API Key
+- CoinGecko API Key (optional)
+
+See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) for detailed setup instructions.
 
 ## 🚂 Deployment
 
-### Deploy with Railway (Recommended)
 ```bash
+# Deploy to Railway (Recommended)
 railway login
 railway up
 ```
 
-### Deploy Manually
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
-## 🧪 Run Tests
+## 🧪 Testing
 
 ```bash
 python test_stonks.py
@@ -145,20 +119,21 @@ python test_stonks.py
 
 ## 🌟 Features
 
-- **Dual API Support**: Polygon.io for stocks + CoinGecko for crypto
-- **Smart Provider Selection**: Automatically chooses the best API
-- **Error Handling**: Clear error messages and rate limit protection
-- **Auto-Updates**: Charts update every hour via GitHub Actions
-- **High Quality**: Professional 300 DPI chart output
+- Multi-API support (Polygon.io + CoinGecko)
+- Automatic provider selection
+- Comprehensive error handling
+- Rate limit protection
+- Auto-updating demo charts (hourly)
+- High-resolution output (300 DPI)
 
 ## 🔍 Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| "No data available" | Check ticker symbol or try a different time period |
-| "Rate limited" | Wait a moment and try again |
-| "Invalid ticker" | Use `X:SYMBOL` for stocks, `SYMBOL` for crypto |
-| Bot not responding | Check Railway logs and verify `DISCORD_TOKEN` |
+| No data available | Check ticker symbol or try different time period |
+| Rate limited | Wait and try again, or add CoinGecko API key |
+| Invalid ticker | Use `X:SYMBOL` for stocks, `SYMBOL` for crypto |
+| Bot not responding | Check Railway logs, verify `DISCORD_TOKEN` |
 
 ## 📚 Documentation
 

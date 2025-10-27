@@ -1,6 +1,6 @@
 # 🚀 Railway Deployment Guide
 
-Complete guide for deploying the Stonks Bot on Railway.
+Step-by-step guide for deploying Stonks Bot to Railway.
 
 ## 📋 Table of Contents
 

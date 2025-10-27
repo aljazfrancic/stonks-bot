@@ -1,6 +1,6 @@
-# 🔧 Environment Variables for Stonks Bot
+# 🔧 Environment Variables
 
-This document lists all the environment variables needed to run the Stonks Bot on Railway.
+Reference for all environment variables used by Stonks Bot.
 
 ## 📋 Required Environment Variables
 
@@ -79,24 +79,16 @@ railway variables set LOG_LEVEL=INFO
 railway variables set ENVIRONMENT=production
 ```
 
-### Option 3: Automated Setup with setup_railway.py (Easiest)
+### Option 3: Automated Setup (Easiest)
 
-We've created a helpful script that automates the setup process:
+Run the setup script to automate the process:
 
 ```bash
-# Run the setup script (requires Python)
 python setup_railway.py
 ```
 
-**What the script does:**
-- ✅ **Reads your local .env file** automatically
-- ✅ **Generates Railway CLI commands** with masked sensitive values
-- ✅ **Provides dashboard instructions** with your actual variables
-- ✅ **Ensures security** by masking tokens and API keys
-- ✅ **Guides you through** the entire setup process
-
 **Prerequisites:**
-1. **Create a .env file** in your project root with:
+1. Create a `.env` file in your project root:
    ```bash
    DISCORD_TOKEN=your_actual_discord_token
    POLYGON=your_actual_polygon_api_key
@@ -104,10 +96,11 @@ python setup_railway.py
    LOG_LEVEL=INFO
    ENVIRONMENT=production
    ```
-2. **Run the script**: `python setup_railway.py`
-3. **Follow the generated instructions**
+2. Run the script: `python setup_railway.py`
+3. Follow the generated instructions
 
-### Option 4: Railway.toml (if using)
+### Option 4: Railway.toml
+
 ```toml
 [build]
 builder = "nixpacks"
@@ -123,53 +116,27 @@ LOG_LEVEL = "INFO"
 ENVIRONMENT = "production"
 ```
 
-## ⚡ Quick Start with setup_railway.py
+## 🔒 Security
 
-### Step 1: Create .env File
-Create a `.env` file in your project root:
-```bash
-# .env
-DISCORD_TOKEN=your_discord_bot_token_here
-POLYGON=your_polygon_api_key_here
-COINGECKO=your_coingecko_api_key_here
-LOG_LEVEL=INFO
-ENVIRONMENT=production
-```
+- Never commit `.env` files to version control
+- Use Railway's environment variable management for production
+- Rotate API keys regularly
+- Use different tokens for development and production
 
-### Step 2: Run Setup Script
-```bash
-python setup_railway.py
-```
+## 🧪 Testing
 
-### Step 3: Follow Generated Instructions
-The script will output:
-- **Railway CLI commands** (if you prefer CLI)
-- **Dashboard instructions** (if you prefer web interface)
-- **Security notes** and **next steps**
-
-## 🔒 Security Notes
-
-- **Never commit your .env file** to version control
-- **Use Railway's built-in environment variable management** for production
-- **Rotate your API keys regularly** for security
-- **Use different tokens** for development and production environments
-- **The setup script masks sensitive values** for security
-
-## 🧪 Testing Environment Variables
-
-After setting the environment variables, you can test them by:
-
-1. **Deploying to Railway** and checking the logs
-2. **Running locally** with a .env file (for development only)
-3. **Checking the bot's status** in Discord
+Test your setup by:
+1. Deploying to Railway and checking logs
+2. Running locally with a `.env` file
+3. Checking bot status in Discord
 
 ## 🔧 Troubleshooting
 
-- **Bot not responding**: Check if DISCORD_TOKEN is correct
-- **No stock data**: Verify POLYGON API key is valid
-- **Crypto rate limits**: Add COINGECKO API key for higher limits
-- **Variable name confusion**: Use either `COINGECKO` or `COIN_GECKO` (both work)
-- **Cryptocurrency data works without key**: CoinGecko free tier works without API key
-- **Logs not showing**: Check LOG_LEVEL setting
-- **Script not working**: Ensure Python is installed and .env file exists
-- **Permission errors**: Make sure your .env file is readable
+| Issue | Solution |
+|-------|----------|
+| Bot not responding | Check if `DISCORD_TOKEN` is correct |
+| No stock data | Verify `POLYGON` API key is valid |
+| Rate limits | Add `COINGECKO` API key for higher limits |
+| Variable name | Use `COINGECKO` or `COIN_GECKO` (both work) |
+| Logs not showing | Check `LOG_LEVEL` setting |
+| Script errors | Ensure Python installed and `.env` file exists |
