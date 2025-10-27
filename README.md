@@ -51,7 +51,7 @@ python bot.py
 ```
 ![14-Day Chart](pics/!stonks_14.png)
 
-### ** BTC and Major Tech Stocks (365 days):**
+### **BTC and Major Tech Stocks (365 days):**
 ```text
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
