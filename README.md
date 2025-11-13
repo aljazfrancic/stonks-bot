@@ -7,28 +7,6 @@
 
 > Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
 
-## ⚡ Quick Start
-
-### Deploy to Railway (Recommended)
-1. Fork this repository
-2. Get your API keys:
-   - [Discord Bot Token](https://discord.com/developers/applications) (required)
-   - [Polygon.io API Key](https://polygon.io/) (required for stocks, free tier available)
-   - [CoinGecko API Key](https://www.coingecko.com/en/api) (optional - for higher crypto rate limits)
-3. Run `railway up` and set environment variables in Railway dashboard
-4. Invite bot to your Discord server
-
-### Run Locally
-```bash
-git clone https://github.com/aljazfrancic/stonks-bot.git
-cd stonks-bot && ./scripts/setup.sh
-# Edit .env with your API keys:
-# DISCORD_TOKEN=your_token
-# POLYGON=your_polygon_key
-# COINGECKO=your_coingecko_key
-python bot.py
-```
-
 ## 📊 Example Charts
 
 > **Note:** These charts are automagically updated via GitHub Actions every hour.
@@ -56,6 +34,28 @@ python bot.py
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
 ![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
+
+## ⚡ Quick Start
+
+### Deploy to Railway (Recommended)
+1. Fork this repository
+2. Get your API keys:
+   - [Discord Bot Token](https://discord.com/developers/applications) (required)
+   - [Polygon.io API Key](https://polygon.io/) (required for stocks, free tier available)
+   - [CoinGecko API Key](https://www.coingecko.com/en/api) (optional - for higher crypto rate limits)
+3. Run `railway up` and set environment variables in Railway dashboard
+4. Invite bot to your Discord server
+
+### Run Locally
+```bash
+git clone https://github.com/aljazfrancic/stonks-bot.git
+cd stonks-bot && ./scripts/setup.sh
+# Edit .env with your API keys:
+# DISCORD_TOKEN=your_token
+# POLYGON=your_polygon_key
+# COINGECKO=your_coingecko_key
+python bot.py
+```
 
 ## 🎯 How to Use
 
@@ -124,7 +124,6 @@ python test_stonks.py
 - Comprehensive error handling
 - Rate limit protection
 - Auto-updating demo charts (hourly)
-- High-resolution output (300 DPI)
 
 ## 🔍 Troubleshooting
 
