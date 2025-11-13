@@ -88,7 +88,7 @@ python bot.py
 # .env example
 DISCORD_TOKEN=your_discord_bot_token
 POLYGON=your_polygon_api_key
-COINGECKO=your_coingecko_api_key  # Optional
+COINGECKO=your_coingecko_api_key   # Optional
 LOG_LEVEL=INFO                     # Optional
 ENVIRONMENT=production             # Optional
 ```
