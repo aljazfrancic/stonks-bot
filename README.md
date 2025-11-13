@@ -9,7 +9,8 @@
 
 ## 📊 Example Charts
 
-> **Note:** These charts are automagically updated via GitHub Actions every hour.
+> [!NOTE]
+> These charts are automagically updated via GitHub Actions every hour.
 
 ### Default Portfolio (365 days)
 ```text
