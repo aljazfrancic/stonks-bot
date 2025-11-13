@@ -7,7 +7,7 @@ Discord bot that creates real-time price comparison charts for cryptocurrencies 
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Preview
+## 🔎 Preview
 
 > [!NOTE]
 > These charts are automagically updated via GitHub Actions every hour.
