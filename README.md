@@ -1,9 +1,9 @@
+> Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
+
 [![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Discord.py](https://img.shields.io/badge/Discord.py-2.0+-green.svg)](https://discordpy.readthedocs.io/)
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-> Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
 
 > [!NOTE]
 > These charts are automagically updated via GitHub Actions every hour.
