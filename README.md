@@ -5,8 +5,6 @@
 
 > Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
 
-## 📊 Example Charts
-
 > [!NOTE]
 > These charts are automagically updated via GitHub Actions every hour.
 
