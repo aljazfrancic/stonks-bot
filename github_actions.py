@@ -8,5 +8,5 @@ update the stonks images with the latest market data.
 from stonks import main
 
 if __name__ == "__main__":
-    # Save images for GitHub Actions
-    main(save=True)
+    # Save images for GitHub Actions (using SVG format)
+    main(save=True, format='svg')

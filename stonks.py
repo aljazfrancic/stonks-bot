@@ -346,7 +346,7 @@ async def get_fig(days: Union[str, int], tickers: List[str]) -> plt.Figure:
     return await chart.create_chart(days, tickers)
 
 
-def main(save: bool = False) -> None:
+def main(save: bool = False, format: str = 'png') -> None:
     """Main function for command-line usage."""
     try:
         loop = asyncio.new_event_loop()
@@ -370,9 +370,9 @@ def main(save: bool = False) -> None:
                 f"pics/{COMMAND_PREFIX}"
                 + ("_" if args else "")
                 + "_".join(args)
-                + ".png"
+                + f".{format}"
             )
-            plt.savefig(filename, dpi=300, bbox_inches='tight')
+            plt.savefig(filename, format=format, dpi=300, bbox_inches='tight')
             print(f"Chart saved as {filename}")
         else:
             # Display the chart

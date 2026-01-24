@@ -16,25 +16,25 @@ Discord bot that creates real-time price comparison charts for cryptocurrencies 
 ```text
 !stonks
 ```
-![Default Portfolio](pics/!stonks.png)
+![Default Portfolio](pics/!stonks.svg)
 
 ### Short-term Analysis (3 days)
 ```text
 !stonks 3
 ```
-![3-Day Chart](pics/!stonks_3.png)
+![3-Day Chart](pics/!stonks_3.svg)
 
 ### Medium-term Analysis (14 days)
 ```text
 !stonks 14
 ```
-![14-Day Chart](pics/!stonks_14.png)
+![14-Day Chart](pics/!stonks_14.svg)
 
 ### BTC and Major Tech Stocks (365 days)
 ```text
 !stonks 365 BTC X:GOOG X:NVDA X:AAPL X:MSFT
 ```
-![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.png)
+![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.svg)
 
 ## ⚡ Quick Start
 
