@@ -372,6 +372,8 @@ def main(save: bool = False, format: str = 'png') -> None:
                 + "_".join(args)
                 + f".{format}"
             )
+            # Create pics directory if it doesn't exist
+            os.makedirs("pics", exist_ok=True)
             plt.savefig(filename, format=format, dpi=300, bbox_inches='tight')
             print(f"Chart saved as {filename}")
         else:
