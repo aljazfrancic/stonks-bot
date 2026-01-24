@@ -126,7 +126,7 @@ python test_stonks.py
 - Rate limit protection
 - Auto-updating demo charts (hourly)
 
-## 🔍 Troubleshooting
+## 🛠️ Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
