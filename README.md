@@ -61,7 +61,7 @@ python bot.py
 ## 🎯 How to Use
 
 ### Basic Commands
-```bash
+```
 !stonks                   # Default portfolio (BTC, ETH, XMR, AVAX)
 !stonks 7                 # 7-day chart
 !stonks 30 BTC ETH        # 30-day BTC/ETH chart
