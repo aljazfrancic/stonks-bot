@@ -1,33 +1,33 @@
-# 🚀 Railway Deployment Guide
+# Railway Deployment Guide
 
 Step-by-step guide for deploying Stonks Bot to Railway.
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Prerequisites](#-prerequisites)
-- [Quick Deploy](#-quick-deploy)
-- [Manual Deploy](#-manual-deploy)
+- [Prerequisites](#prerequisites)
+- [Quick Deploy](#quick-deploy)
+- [Manual Deploy](#manual-deploy)
   - [Option A: Deploy via Railway Dashboard](#option-a-deploy-via-railway-dashboard)
   - [Option B: Deploy via Railway CLI](#option-b-deploy-via-railway-cli)
-- [Configure Discord Bot](#-configure-discord-bot)
-- [Verify Deployment](#-verify-deployment)
-- [Monitor and Maintain](#-monitor-and-maintain)
-- [Troubleshooting](#-troubleshooting)
-- [Security Best Practices](#-security-best-practices)
-- [Cost Considerations](#-cost-considerations)
-- [Additional Resources](#-additional-resources)
+- [Configure Discord Bot](#configure-discord-bot)
+- [Verify Deployment](#verify-deployment)
+- [Monitor and Maintain](#monitor-and-maintain)
+- [Troubleshooting](#troubleshooting)
+- [Security Best Practices](#security-best-practices)
+- [Cost Considerations](#cost-considerations)
+- [Additional Resources](#additional-resources)
 
-## ✅ Prerequisites
+## Prerequisites
 
 Before you begin, make sure you have:
 
-- ✅ [Railway account](https://railway.app/)
-- ✅ [Discord application and bot token](https://discord.com/developers/applications)
-- ✅ [Polygon.io API key](https://polygon.io/) (free tier available)
-- ✅ [CoinGecko API key](https://www.coingecko.com/en/api) (optional - free tier available)
-- ✅ Your bot code in a Git repository
+- [Railway account](https://railway.app/)
+- [Discord application and bot token](https://discord.com/developers/applications)
+- [Polygon.io API key](https://polygon.io/) (free tier available)
+- [CoinGecko API key](https://www.coingecko.com/en/api) (optional - free tier available)
+- Your bot code in a Git repository
 
-## ⚡ Quick Deploy
+## Quick Deploy
 
 1. **Fork this repository** to your GitHub account
 2. **Connect to Railway**:
@@ -40,7 +40,7 @@ Before you begin, make sure you have:
    - `COINGECKO`: Your CoinGecko API key (optional)
 4. **Deploy** - Railway will automatically build and deploy your bot!
 
-## 🛠️ Manual Deploy
+## Manual Deploy
 
 ### Option A: Deploy via Railway Dashboard
 
@@ -91,7 +91,7 @@ Before you begin, make sure you have:
    railway up
    ```
 
-## 🤖 Configure Discord Bot
+## Configure Discord Bot
 
 1. **Create Discord Application**
    - Go to [Discord Developer Portal](https://discord.com/developers/applications)
@@ -116,7 +116,7 @@ Before you begin, make sure you have:
    - Select the permissions mentioned above
    - Use the generated URL to invite the bot to your server
 
-## ✅ Verify Deployment
+## Verify Deployment
 
 1. **Check Railway Logs**
    - In Railway dashboard, go to your deployment
@@ -131,7 +131,7 @@ Before you begin, make sure you have:
    !stonks 30 X:BTCUSD GOOG NVDA
    ```
 
-## 📊 Monitor and Maintain
+## Monitor and Maintain
 
 ### Railway Dashboard Monitoring
 - **Logs**: Monitor application logs in real-time
@@ -183,7 +183,7 @@ If you're still experiencing issues:
 3. **Ensure your Discord bot** has the required permissions
 4. **Open an issue** on GitHub with detailed error information
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
 ### API Key Security
 
@@ -208,7 +208,7 @@ If you're still experiencing issues:
 - **Server restrictions**: Limit bot access to trusted servers
 - **Token protection**: Keep bot tokens secure and private
 
-## 💰 Cost Considerations
+## Cost Considerations
 
 ### Free Tier Limits
 
@@ -225,7 +225,7 @@ If you're still experiencing issues:
 - **Monitor Polygon.io usage** to stay within free limits
 - **Consider paid plans** only for high-traffic production bots
 
-## 📚 Additional Resources
+## Additional Resources
 
 ### Documentation
 - [Railway Documentation](https://docs.railway.app/) - Complete Railway deployment guide

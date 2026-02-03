@@ -1,8 +1,8 @@
-# 🔧 Environment Variables
+# Environment Variables
 
 Reference for all environment variables used by Stonks Bot.
 
-## 📋 Required Environment Variables
+## Required Environment Variables
 
 ### 1. DISCORD_TOKEN
 - **Description**: Your Discord bot token from the Discord Developer Portal
@@ -51,7 +51,7 @@ Reference for all environment variables used by Stonks Bot.
 - **Default**: development
 - **Example**: `ENVIRONMENT=production`
 
-## 🚀 Setting Environment Variables in Railway
+## Setting Environment Variables in Railway
 
 ### Option 1: Railway Dashboard (Recommended)
 1. Go to your Railway project dashboard
@@ -116,21 +116,21 @@ LOG_LEVEL = "INFO"
 ENVIRONMENT = "production"
 ```
 
-## 🔒 Security
+## Security
 
 - Never commit `.env` files to version control
 - Use Railway's environment variable management for production
 - Rotate API keys regularly
 - Use different tokens for development and production
 
-## 🧪 Testing
+## Testing
 
 Test your setup by:
 1. Deploying to Railway and checking logs
 2. Running locally with a `.env` file
 3. Checking bot status in Discord
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 | Issue | Solution |
 |-------|----------|

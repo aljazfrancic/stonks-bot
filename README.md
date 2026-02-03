@@ -1,4 +1,4 @@
-# 🤖 Stonks Bot 
+# Stonks Bot
 
 Discord bot that creates real-time price comparison charts for cryptocurrencies and stocks
 
@@ -7,7 +7,7 @@ Discord bot that creates real-time price comparison charts for cryptocurrencies 
 [![Railway](https://img.shields.io/badge/Deploy%20on-Railway-000000.svg?logo=railway)](https://railway.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🔎 Preview
+## Preview
 
 > [!NOTE]
 > These charts are automagically updated via GitHub Actions every hour.
@@ -36,7 +36,7 @@ Discord bot that creates real-time price comparison charts for cryptocurrencies 
 ```
 ![BTC and Tech Stocks](pics/!stonks_365_BTC_X-GOOG_X-NVDA_X-AAPL_X-MSFT.svg)
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Deploy to Railway (Recommended)
 1. Fork this repository
@@ -58,7 +58,7 @@ cd stonks-bot && ./scripts/setup.sh
 python bot.py
 ```
 
-## 🎯 How to Use
+## How to Use
 
 ### Basic Commands
 ```
@@ -72,7 +72,7 @@ python bot.py
 - **Cryptocurrencies**: `BTC`, `ETH`, `SOL` (via CoinGecko)
 - **Stocks**: `X:AAPL`, `X:MSFT`, `X:GOOG` (via Polygon.io)
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -102,7 +102,7 @@ ENVIRONMENT=production             # Optional
 
 See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) for detailed setup instructions.
 
-## 🚂 Deployment
+## Deployment
 
 ```bash
 # Deploy to Railway (Recommended)
@@ -112,13 +112,13 @@ railway up
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
-## 🧪 Testing
+## Testing
 
 ```bash
 python test_stonks.py
 ```
 
-## 🌟 Features
+## Features
 
 - Multi-API support (Polygon.io + CoinGecko)
 - Automatic provider selection
@@ -126,7 +126,7 @@ python test_stonks.py
 - Rate limit protection
 - Auto-updating demo charts (hourly)
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
@@ -135,7 +135,7 @@ python test_stonks.py
 | Invalid ticker | Use `X:SYMBOL` for stocks, `SYMBOL` for crypto |
 | Bot not responding | Check Railway logs, verify `DISCORD_TOKEN` |
 
-## 📚 Documentation
+## Documentation
 
 - [Discord.py Documentation](https://discordpy.readthedocs.io/)
 - [Polygon.io API Docs](https://polygon.io/docs/)

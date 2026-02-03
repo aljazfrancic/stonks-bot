@@ -40,7 +40,7 @@ async def on_message(message):
     logger.info(f"Received stonks command from {message.author}: {message.content}")
     
     # Send initial response
-    await message.channel.send("🔄 Generating your stonks chart...")
+    await message.channel.send("Generating your stonks chart...")
     
     try:
         # Determine parameters
@@ -61,12 +61,12 @@ async def on_message(message):
         await send_chart(message.channel, fig)
         
     except StonksError as e:
-        error_msg = f"❌ Error generating chart: {str(e)}"
+        error_msg = f"Error generating chart: {str(e)}"
         logger.error(f"StonksError for user {message.author}: {e}")
         await message.channel.send(error_msg)
         
     except Exception as e:
-        error_msg = f"❌ Unexpected error: {str(e)}"
+        error_msg = f"Unexpected error: {str(e)}"
         logger.error(f"Unexpected error for user {message.author}: {e}", exc_info=True)
         await message.channel.send(error_msg)
 
@@ -83,7 +83,7 @@ async def send_chart(channel, fig: plt.Figure) -> None:
         
         # Send the file to Discord
         file = discord.File(buf, filename="stonks_chart.png")
-        await channel.send("📈 Here's your stonks chart!", file=file)
+        await channel.send("Here's your stonks chart!", file=file)
         
         # Clean up
         buf.close()
@@ -91,13 +91,13 @@ async def send_chart(channel, fig: plt.Figure) -> None:
         
     except Exception as e:
         logger.error(f"Error sending chart: {e}")
-        await channel.send(f"❌ Error sending chart: {str(e)}")
+        await channel.send(f"Error sending chart: {str(e)}")
 
 
 @client.event
 async def on_ready():
     """Called when the bot is ready."""
-    logger.info(f"🤖 {client.user} is online and ready!")
+    logger.info(f"{client.user} is online and ready!")
     logger.info(f"Bot ID: {client.user.id}")
     logger.info(f"Connected to {len(client.guilds)} guild(s)")
     

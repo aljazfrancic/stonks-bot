@@ -16,7 +16,7 @@ def read_env_file():
     env_file = Path('.env')
     
     if not env_file.exists():
-        print("❌ .env file not found!")
+        print(".env file not found!")
         print("Please create a .env file with your secrets first.")
         return {}
     
@@ -30,7 +30,7 @@ def read_env_file():
                     env_vars[key.strip()] = value.strip()
         return env_vars
     except Exception as e:
-        print(f"❌ Error reading .env file: {e}")
+        print(f"Error reading .env file: {e}")
         return {}
 
 def generate_railway_commands(env_vars):
@@ -38,7 +38,7 @@ def generate_railway_commands(env_vars):
     if not env_vars:
         return
     
-    print("🚂 Railway CLI Commands:")
+    print("Railway CLI Commands:")
     print("=" * 50)
     
     for key, value in env_vars.items():
@@ -56,7 +56,7 @@ def generate_dashboard_instructions(env_vars):
     if not env_vars:
         return
     
-    print("\n🖥️  Railway Dashboard Instructions:")
+    print("\nRailway Dashboard Instructions:")
     print("=" * 50)
     print("1. Go to [Railway Dashboard](https://railway.app)")
     print("2. Select your stonks-bot project")
@@ -77,21 +77,21 @@ def generate_dashboard_instructions(env_vars):
 
 def main():
     """Main function."""
-    print("🚂 Stonks Bot Railway Setup")
+    print("Stonks Bot Railway Setup")
     print("=" * 50)
     
     # Read environment variables
     env_vars = read_env_file()
     
     if not env_vars:
-        print("\n📝 Create a .env file with these variables:")
+        print("\nCreate a .env file with these variables:")
         print("DISCORD_TOKEN=your_discord_bot_token")
         print("POLYGON=your_polygon_api_key")
         print("LOG_LEVEL=INFO")
         print("ENVIRONMENT=production")
         return
     
-    print(f"✅ Found {len(env_vars)} environment variables in .env file")
+    print(f"Found {len(env_vars)} environment variables in .env file")
     
     # Generate Railway CLI commands
     generate_railway_commands(env_vars)
@@ -99,12 +99,12 @@ def main():
     # Generate dashboard instructions
     generate_dashboard_instructions(env_vars)
     
-    print("\n🔒 Security Notes:")
+    print("\nSecurity Notes:")
     print("- Never share your .env file")
     print("- Use Railway's built-in environment variable management")
     print("- Rotate your API keys regularly")
     
-    print("\n🚀 Next Steps:")
+    print("\nNext Steps:")
     print("1. Choose either Railway CLI or Dashboard method above")
     print("2. Set the environment variables in Railway")
     print("3. Deploy your bot")
