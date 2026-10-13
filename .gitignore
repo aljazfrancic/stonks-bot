@@ -25,8 +25,11 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.pytest_cache/
+.ruff_cache/
 
 # Virtual environments
+.venv/
 venv/
 env/
 ENV/
@@ -48,3 +51,6 @@ Thumbs.db
 
 # Railway
 .railway/
+
+# Charts saved by `stonks.py --save` (the README ones live on the charts branch)
+pics/
