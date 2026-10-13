@@ -5,331 +5,442 @@ This module provides functionality to fetch historical price data from multiple 
 (Polygon.io and CoinGecko) and create normalized price comparison charts.
 """
 
+import argparse
 import asyncio
 import datetime
+import gc
+import io
 import json
+import logging
+import math
 import os
+import re
 import sys
-import urllib3
-from typing import List, Tuple, Optional, Union
-from urllib3.exceptions import HTTPError, RequestError, TimeoutError
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
+import threading
 import time
-from dotenv import load_dotenv
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from urllib.parse import quote
 
-# Load environment variables
-load_dotenv()
+import matplotlib.patheffects as pe
+import matplotlib.style
+import numpy as np
+import urllib3
+from dotenv import load_dotenv
+from matplotlib.figure import Figure
+from urllib3.exceptions import HTTPError
+
+logger = logging.getLogger(__name__)
 
 # Configuration
-plt.style.use("dark_background")
+matplotlib.style.use("dark_background")
 COMMAND_PREFIX = "!stonks"
 DEFAULT_TICKERS = ["BTC", "ETH", "XMR", "AVAX"]
+DEFAULT_DAYS = 365
+MIN_DAYS = 1
+MAX_DAYS = 3650
+MAX_TICKERS = 10
+TICKS_NUM = 11
+STOCK_PREFIX = "X:"
+# Letters, digits and . : _ - (e.g. BTC, avalanche-2, X:BRK.B)
+TICKER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9.:_-]{0,39}")
 
 # API Configuration
 POLYGON_BASE_URL = "https://api.polygon.io/v2/aggs"
 COINGECKO_BASE_URL = "https://api.coingecko.com/api/v3"
+# CoinGecko's free (public and demo) API only serves the last 365 days
+COINGECKO_MAX_DAYS = 365
+HTTP_TIMEOUT = urllib3.Timeout(connect=5, read=20)
+# Retry connection problems and server errors, but not hung reads or rate limits
+HTTP_RETRIES = urllib3.Retry(
+    total=2,
+    read=0,
+    backoff_factor=0.5,
+    status_forcelist=(500, 502, 503, 504),
+    raise_on_status=False,
+)
+DAY_MS = 24 * 60 * 60 * 1000
 
-# Error messages
-ERROR_MESSAGES = {
-    "api_key_missing": "API key not found. Please set the POLYGON environment variable.",
-    "invalid_ticker": "Invalid ticker format. Use 'X:SYMBOL' for Polygon or 'symbol' for CoinGecko.",
-    "api_error": "API request failed. Please try again later.",
-    "no_data": "No data available for the specified ticker and time period.",
-    "rate_limit": "Rate limit exceeded. Please wait before making another request."
+# CoinGecko coin ids for common tickers; other symbols are looked up via the API
+COINGECKO_IDS = {
+    "BTC": "bitcoin",
+    "ETH": "ethereum",
+    "XMR": "monero",
+    "AVAX": "avalanche-2",
+    "ADA": "cardano",
+    "DOT": "polkadot",
+    "LINK": "chainlink",
+    "LTC": "litecoin",
+    "BCH": "bitcoin-cash",
+    "XRP": "ripple",
+    "SOL": "solana",
+    "DOGE": "dogecoin",
+    "UNI": "uniswap",
+    "ATOM": "cosmos",
+    "BNB": "binancecoin",
+    "TRX": "tron",
+    "SHIB": "shiba-inu",
+    "XLM": "stellar",
 }
 
 
 class StonksError(Exception):
     """Custom exception for Stonks bot errors."""
-    pass
+
+
+@dataclass
+class Series:
+    """Price history of one ticker."""
+
+    label: str
+    timestamps: np.ndarray  # milliseconds since the epoch (UTC)
+    prices: np.ndarray
 
 
 class DataProvider:
     """Base class for data providers."""
-    
-    def __init__(self, api_key: Optional[str] = None):
+
+    name = "API"
+
+    def __init__(self, api_key: str | None = None):
         self.api_key = api_key
-        self.http = urllib3.PoolManager()
-    
-    def _make_request(self, url: str) -> dict:
-        """Make HTTP request with error handling."""
+        # API keys travel in headers, never in URLs, so they can't leak into error messages or logs
+        self.http = urllib3.PoolManager(
+            timeout=HTTP_TIMEOUT, retries=HTTP_RETRIES, headers=self._auth_headers()
+        )
+
+    def _auth_headers(self) -> dict[str, str]:
+        """Headers that authenticate requests to this provider."""
+        return {}
+
+    def _get_json(self, url: str, fields: dict[str, object] | None = None):
+        """GET a JSON document, turning every failure into a StonksError."""
         try:
-            response = self.http.request("GET", url)
-            if response.status == 429:
-                raise StonksError(ERROR_MESSAGES["rate_limit"])
-            elif response.status != 200:
-                raise StonksError(f"API request failed with status {response.status}")
-            
+            response = self.http.request("GET", url, fields=fields)
+        except HTTPError as e:
+            logger.warning("%s request failed: %s", self.name, e)
+            raise StonksError(f"could not reach {self.name}") from e
+
+        if response.status == 429:
+            raise StonksError(f"{self.name} rate limit hit, try again in a minute")
+        if response.status in (401, 403):
+            raise StonksError(f"{self.name} refused the request (check the API key and plan)")
+        if response.status == 404:
+            raise StonksError(f"not found on {self.name}")
+        if response.status != 200:
+            raise StonksError(f"{self.name} returned HTTP {response.status}")
+
+        try:
             return json.loads(response.data)
-        except (HTTPError, RequestError, TimeoutError) as e:
-            raise StonksError(f"Network error: {str(e)}")
-        except json.JSONDecodeError as e:
-            raise StonksError(f"Invalid JSON response: {str(e)}")
-        except Exception as e:
-            raise StonksError(f"Unexpected error: {str(e)}")
+        except ValueError as e:
+            raise StonksError(f"invalid response from {self.name}") from e
 
 
 class PolygonProvider(DataProvider):
-    """Polygon.io data provider for stocks and some cryptocurrencies."""
-    
-    def get_historical_data(self, ticker: str, days: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """Get historical price data from Polygon.io."""
+    """Polygon.io data provider for stocks."""
+
+    name = "Polygon.io"
+
+    def _auth_headers(self) -> dict[str, str]:
+        return {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+
+    def get_historical_data(self, symbol: str, days: int) -> tuple[np.ndarray, np.ndarray]:
+        """Get (timestamps, close prices) for a stock symbol such as AAPL."""
         if not self.api_key:
-            raise StonksError(ERROR_MESSAGES["api_key_missing"])
-        
-        if not ticker.startswith("X:"):
-            raise StonksError(ERROR_MESSAGES["invalid_ticker"])
-        
-        print(f"Fetching data for {ticker} from Polygon.io...")
-        
-        # Remove X: prefix for Polygon API calls
-        clean_ticker = ticker.replace("X:", "")
-        
+            raise StonksError("POLYGON API key not set")
+        if not symbol:
+            raise StonksError(f"missing stock symbol after {STOCK_PREFIX}")
+
         end_time = int(time.time() * 1000)
-        start_time = end_time - days * 24 * 60 * 60 * 1000
+        start_time = end_time - days * DAY_MS
         interval = "day" if days > 60 else "minute"
-        
-        url = f"{POLYGON_BASE_URL}/ticker/{clean_ticker}/range/1/{interval}/{start_time}/{end_time}?limit=50000&apiKey={self.api_key}"
-        
-        data = self._make_request(url)
-        
-        if not data.get("results"):
-            print(f"Polygon API response for {clean_ticker}: {data}")
-            raise StonksError(ERROR_MESSAGES["no_data"])
-        
-        # Extract data before converting to numpy arrays
-        results = data["results"]
-        print(f"Successfully fetched {len(results)} data points for {clean_ticker}")
-        
-        prices = np.array([result["c"] for result in results])
-        timestamps = np.array([result["t"] for result in results])
-        
-        # Convert timestamps to readable dates
-        readable_dates = np.array([
-            datetime.datetime.fromtimestamp(ts / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
-            for ts in timestamps
-        ])
-        
-        return prices, readable_dates, timestamps
+        url = f"{POLYGON_BASE_URL}/ticker/{quote(symbol, safe='')}/range/1/{interval}/{start_time}/{end_time}"
+
+        data = self._get_json(url, {"limit": 50000})
+        results = data.get("results") if isinstance(data, dict) else None
+        if not results:
+            logger.debug("Polygon.io response for %s: %s", symbol, data)
+            raise StonksError("no data for this period (unknown symbol or market closed?)")
+        if data.get("next_url"):
+            logger.warning("Polygon.io returned only the first %d bars for %s", len(results), symbol)
+
+        try:
+            timestamps = np.array([result["t"] for result in results], dtype=float)
+            prices = np.array([result["c"] for result in results], dtype=float)
+        except (KeyError, TypeError, ValueError) as e:
+            raise StonksError(f"unexpected response from {self.name}") from e
+        return timestamps, prices
 
 
 class CoinGeckoProvider(DataProvider):
     """CoinGecko data provider for cryptocurrencies."""
-    
-    def get_historical_data(self, ticker: str, days: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """Get historical price data from CoinGecko."""
-        print(f"Fetching data for {ticker} from CoinGecko...")
-        
-        # Convert ticker to CoinGecko format
-        coin_id = self._get_coin_id(ticker)
-        
-        url = f"{COINGECKO_BASE_URL}/coins/{coin_id}/market_chart?vs_currency=usd&days={days}"
-        
-        # Add API key if available
-        if self.api_key:
-            url += f"&x_cg_demo_api_key={self.api_key}"
-        
-        data = self._make_request(url)
-        
-        if not data.get("prices"):
-            raise StonksError(ERROR_MESSAGES["no_data"])
-        
-        prices = np.array([price[1] for price in data["prices"]])
-        timestamps = np.array([price[0] for price in data["prices"]])
-        
-        # Convert timestamps to readable dates
-        readable_dates = np.array([
-            datetime.datetime.fromtimestamp(ts / 1000, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
-            for ts in timestamps
-        ])
-        
-        return prices, readable_dates, timestamps
-    
-    def _get_coin_id(self, ticker: str) -> str:
-        """Convert ticker to CoinGecko coin ID."""
-        # Common ticker mappings
-        ticker_mapping = {
-            "BTC": "bitcoin",
-            "ETH": "ethereum",
-            "XMR": "monero",
-            "AVAX": "avalanche-2",
-            "ADA": "cardano",
-            "DOT": "polkadot",
-            "LINK": "chainlink",
-            "LTC": "litecoin",
-            "BCH": "bitcoin-cash",
-            "XRP": "ripple"
-        }
-        
-        # Remove 'X:' prefix if present
-        clean_ticker = ticker.replace("X:", "")
-        
-        if clean_ticker in ticker_mapping:
-            return ticker_mapping[clean_ticker]
-        
-        # If not in mapping, try to use the ticker as-is
-        return clean_ticker.lower()
+
+    name = "CoinGecko"
+
+    def __init__(self, api_key: str | None = None):
+        super().__init__(api_key)
+        self._looked_up: dict[str, str] = {}
+
+    def _auth_headers(self) -> dict[str, str]:
+        return {"x-cg-demo-api-key": self.api_key} if self.api_key else {}
+
+    def resolve_coin_ids(self, tickers: Sequence[str]) -> dict[str, str]:
+        """Map tickers (symbols like DOGE, or CoinGecko ids like avalanche-2) to coin ids."""
+        coin_ids = {}
+        unknown = []
+        for ticker in tickers:
+            coin_id = COINGECKO_IDS.get(ticker.upper()) or self._looked_up.get(ticker.upper())
+            if coin_id:
+                coin_ids[ticker] = coin_id
+            else:
+                unknown.append(ticker)
+
+        if unknown:
+            found = self._lookup_symbols(unknown)
+            for ticker in unknown:
+                coin_id = found.get(ticker.lower())
+                if coin_id:
+                    self._looked_up[ticker.upper()] = coin_id
+                # Not a known symbol: treat the ticker itself as a coin id
+                coin_ids[ticker] = coin_id or ticker.lower()
+        return coin_ids
+
+    def _lookup_symbols(self, symbols: Sequence[str]) -> dict[str, str]:
+        """Find the coin with the largest market cap for each symbol."""
+        try:
+            coins = self._get_json(
+                f"{COINGECKO_BASE_URL}/coins/markets",
+                {
+                    "vs_currency": "usd",
+                    "symbols": ",".join(symbol.lower() for symbol in symbols),
+                    "include_tokens": "top",
+                },
+            )
+        except StonksError as e:
+            logger.warning("CoinGecko symbol lookup failed: %s", e)
+            return {}
+
+        found: dict[str, str] = {}
+        for coin in coins if isinstance(coins, list) else []:
+            if isinstance(coin, dict) and coin.get("symbol") and coin.get("id"):
+                # Results are sorted by market cap, so keep the first match
+                found.setdefault(str(coin["symbol"]).lower(), str(coin["id"]))
+        return found
+
+    def get_historical_data(self, coin_id: str, days: int) -> tuple[np.ndarray, np.ndarray]:
+        """Get (timestamps, prices) in USD for a CoinGecko coin id."""
+        if days > COINGECKO_MAX_DAYS:
+            raise StonksError(f"CoinGecko's free API only covers the last {COINGECKO_MAX_DAYS} days")
+
+        url = f"{COINGECKO_BASE_URL}/coins/{quote(coin_id, safe='')}/market_chart"
+        data = self._get_json(url, {"vs_currency": "usd", "days": days})
+
+        try:
+            points = [point for point in data.get("prices") or [] if point[1] is not None]
+            if not points:
+                raise StonksError("no data for this period")
+            timestamps, prices = np.array(points, dtype=float).T
+        except (AttributeError, IndexError, KeyError, TypeError, ValueError) as e:
+            raise StonksError(f"unexpected response from {self.name}") from e
+        return timestamps, prices
+
+
+def is_stock(ticker: str) -> bool:
+    """Stocks are written as X:SYMBOL and fetched from Polygon.io; everything else is crypto."""
+    return ticker.upper().startswith(STOCK_PREFIX)
+
+
+def parse_days(value: str) -> int:
+    """Parse and validate the number of days."""
+    try:
+        days = int(value)
+    except ValueError:
+        days = None
+    if days is None or not MIN_DAYS <= days <= MAX_DAYS:
+        raise StonksError(f"Days must be a whole number between {MIN_DAYS} and {MAX_DAYS}.")
+    return days
+
+
+def parse_tickers(values: Sequence[str]) -> list[str]:
+    """Validate tickers, normalize them to upper case and drop duplicates."""
+    tickers: list[str] = []
+    for value in values:
+        if not TICKER_PATTERN.fullmatch(value):
+            raise StonksError("Tickers may only contain letters, digits and . : _ - (e.g. BTC or X:AAPL).")
+        ticker = value.upper()
+        if ticker not in tickers:
+            tickers.append(ticker)
+    if len(tickers) > MAX_TICKERS:
+        raise StonksError(f"At most {MAX_TICKERS} tickers per chart.")
+    return tickers
+
+
+def parse_request(args: Sequence[str]) -> tuple[int, list[str]]:
+    """Parse `[days] [ticker ...]` command arguments."""
+    if not args:
+        return DEFAULT_DAYS, list(DEFAULT_TICKERS)
+    return parse_days(args[0]), parse_tickers(args[1:]) or list(DEFAULT_TICKERS)
+
+
+def describe_failures(failures: dict[str, str]) -> str:
+    """Summarize skipped tickers, e.g. `FOO (not found on CoinGecko)`."""
+    return ", ".join(f"{ticker} ({reason})" for ticker, reason in failures.items())
+
+
+def format_price(price: float) -> str:
+    """Two decimals, or three significant digits for prices below 1."""
+    if price >= 1 or price <= 0:
+        return f"{price:.2f}"
+    return f"{price:.{2 - math.floor(math.log10(price))}f}"
+
+
+def format_timestamp(timestamp: float) -> str:
+    """Format a millisecond timestamp as a UTC date."""
+    return datetime.datetime.fromtimestamp(timestamp / 1000, datetime.UTC).strftime(
+        "%Y-%m-%d %H:%M UTC"
+    )
+
+
+def chart_filename(args: Sequence[str], format: str) -> str:
+    """File name matching the command, e.g. `!stonks_365_BTC_X-GOOG.svg`."""
+    return COMMAND_PREFIX + "".join("_" + arg.replace(":", "-") for arg in args) + f".{format}"
+
+
+def log_level_from_env() -> int:
+    """Logging level from the LOG_LEVEL environment variable (default INFO)."""
+    return logging.getLevelNamesMapping().get(os.getenv("LOG_LEVEL", "INFO").upper(), logging.INFO)
 
 
 class StonksChart:
     """Main class for creating stonks charts."""
-    
+
     def __init__(self):
         self.polygon_provider = PolygonProvider(os.getenv("POLYGON"))
-        # Try both COINGECKO and COIN_GECKO environment variables
-        coingecko_api_key = os.getenv("COINGECKO") or os.getenv("COIN_GECKO")
+        # Accept both COIN_GECKO and COINGECKO environment variables
+        coingecko_api_key = os.getenv("COIN_GECKO") or os.getenv("COINGECKO")
         self.coingecko_provider = CoinGeckoProvider(coingecko_api_key)
-    
-    def _get_data_provider(self, ticker: str) -> DataProvider:
-        """Determine which data provider to use based on ticker format."""
-        if ticker.startswith("X:"):
-            return self.polygon_provider
-        else:
-            return self.coingecko_provider
-    
-    async def create_chart(self, days: Union[str, int], tickers: List[str]) -> plt.Figure:
-        """Create a normalized price comparison chart."""
-        days_int = int(days)
-        
-        # Fetch data for all tickers
-        all_prices = []
-        all_timestamps = []
-        all_readable_dates = []
-        
+        # Matplotlib isn't thread-safe; charts may be requested from several worker threads
+        self._render_lock = threading.Lock()
+
+    def fetch(self, days: int, tickers: Sequence[str]) -> tuple[list[Series], dict[str, str]]:
+        """Fetch price history for each ticker; returns the series and {ticker: reason} for failures."""
+        coins = [ticker for ticker in tickers if not is_stock(ticker)]
+        coin_ids = self.coingecko_provider.resolve_coin_ids(coins) if coins else {}
+
+        series: list[Series] = []
+        failures: dict[str, str] = {}
         for ticker in tickers:
             try:
-                provider = self._get_data_provider(ticker)
-                prices, readable_dates, timestamps = provider.get_historical_data(ticker, days_int)
-                
-                all_prices.append(prices)
-                all_timestamps.append(timestamps)
-                all_readable_dates.append(readable_dates)
-                
+                if is_stock(ticker):
+                    logger.info("Fetching %s from Polygon.io", ticker)
+                    timestamps, prices = self.polygon_provider.get_historical_data(
+                        ticker[len(STOCK_PREFIX):], days
+                    )
+                else:
+                    logger.info("Fetching %s (%s) from CoinGecko", ticker, coin_ids[ticker])
+                    timestamps, prices = self.coingecko_provider.get_historical_data(coin_ids[ticker], days)
+                if not prices.max() > 0:
+                    raise StonksError("no valid prices")
             except StonksError as e:
-                print(f"Error fetching data for {ticker}: {e}")
+                logger.warning("Skipping %s: %s", ticker, e)
+                failures[ticker] = str(e)
                 continue
-        
-        if len(all_prices) == 0:
-            raise StonksError("No data could be fetched for any ticker")
-        
-        # Find the oldest timestamp to align all data
-        # Find the array with the earliest timestamp
-        min_index = 0
-        min_timestamp = float('inf')
-        for i, timestamps in enumerate(all_timestamps):
-            if len(timestamps) > 0 and timestamps[0] < min_timestamp:
-                min_timestamp = timestamps[0]
-                min_index = i
-        
-        oldest_timestamps = all_timestamps[min_index]
-        oldest_readable_dates = all_readable_dates[min_index]
-        
-        # Create the chart
-        fig = self._create_matplotlib_chart(
-            days_int, tickers, all_prices, all_timestamps, 
-            oldest_timestamps, oldest_readable_dates
-        )
-        
-        return fig
-    
+            logger.info("Fetched %d data points for %s", len(prices), ticker)
+            series.append(Series(ticker, timestamps, prices))
+
+        if not series:
+            raise StonksError(f"No data could be fetched for any ticker: {describe_failures(failures)}")
+        return series, failures
+
+    def create(
+        self, days: int, tickers: Sequence[str], figure_factory: Callable[..., Figure] = Figure
+    ) -> tuple[Figure, dict[str, str]]:
+        """Create a chart; returns the figure and {ticker: reason} for skipped tickers."""
+        series, failures = self.fetch(days, tickers)
+        with self._render_lock:
+            return self._create_matplotlib_chart(days, series, figure_factory), failures
+
+    def create_png(self, days: int, tickers: Sequence[str]) -> tuple[bytes, dict[str, str]]:
+        """Create a chart as PNG bytes; returns the image and {ticker: reason} for skipped tickers."""
+        series, failures = self.fetch(days, tickers)
+        buf = io.BytesIO()
+        with self._render_lock:
+            fig = self._create_matplotlib_chart(days, series, Figure)
+            fig.savefig(buf, format="png", dpi=300, bbox_inches="tight")
+            # The figure keeps its ~80 MB render alive inside reference cycles that Python
+            # only frees on a full collection; free it now so a long-running bot stays small
+            del fig
+            gc.collect()
+        return buf.getvalue(), failures
+
     def _create_matplotlib_chart(
-        self, 
-        days: int, 
-        tickers: List[str], 
-        all_prices: List[np.ndarray], 
-        all_timestamps: List[np.ndarray],
-        oldest_timestamps: np.ndarray,
-        oldest_readable_dates: np.ndarray
-    ) -> plt.Figure:
+        self, days: int, series: Sequence[Series], figure_factory: Callable[..., Figure]
+    ) -> Figure:
         """Create the matplotlib chart with the given data."""
-        fig = plt.figure(figsize=(15, 6))
-        
-        # Define ticks
-        ticks_num = 11
-        ticks = np.int32(np.linspace(0, oldest_timestamps.shape[0] - 1, ticks_num))
+        fig = figure_factory(figsize=(15, 6))
+        ax = fig.subplots()
         mini = 1
-        
+
         # Plot each ticker
-        for i, (prices, timestamps) in enumerate(zip(all_prices, all_timestamps)):
+        for i, s in enumerate(series):
             # Normalize prices
-            normalized = prices / prices.max()
-            
+            normalized = s.prices / s.prices.max()
+
             # Plot line
-            plt.plot(timestamps, normalized, linewidth=3, label=tickers[i])
-            
+            ax.plot(s.timestamps, normalized, linewidth=3, label=s.label)
+
             # Add price labels for the first ticker
             if i == 0:
-                self._add_price_labels(timestamps, normalized, prices, ticks_num)
-            
+                self._add_price_labels(ax, s.timestamps, normalized, s.prices)
+
             # Track global minimum
-            norm_mini = normalized.min()
-            if norm_mini < mini:
-                mini = norm_mini
-        
+            mini = min(mini, normalized.min())
+
         # Set minimum y-limit
-        if mini > 0.9:
-            mini = 0.9
-        
-        # Configure chart appearance
-        self._configure_chart_appearance(
-            days, oldest_timestamps, oldest_readable_dates, 
-            ticks, mini, tickers
-        )
-        
+        mini = min(mini, 0.9)
+
+        self._configure_chart_appearance(ax, days, series, mini)
+        fig.tight_layout()
         return fig
-    
-    def _add_price_labels(self, timestamps: np.ndarray, normalized: np.ndarray, 
-                         prices: np.ndarray, ticks_num: int) -> None:
+
+    def _add_price_labels(self, ax, timestamps: np.ndarray, normalized: np.ndarray, prices: np.ndarray) -> None:
         """Add price labels to the chart."""
-        ticks_positions = np.int32(
-            np.linspace(0, timestamps.shape[0] - 1, ticks_num)
-        )
-        
-        for x, y, price in zip(
-            timestamps[ticks_positions],
-            normalized[ticks_positions],
-            prices[ticks_positions]
-        ):
-            plt.text(
-                x, y, f"{price:.2f}",
+        positions = np.linspace(0, timestamps.shape[0] - 1, TICKS_NUM).astype(int)
+        for x, y, price in zip(timestamps[positions], normalized[positions], prices[positions]):
+            ax.text(
+                x, y, format_price(price),
                 color="white", size=8, rotation=90,
                 path_effects=[pe.withStroke(linewidth=2, foreground="black")]
             )
-    
-    def _configure_chart_appearance(self, days: int, oldest_timestamps: np.ndarray,
-                                  oldest_readable_dates: np.ndarray, ticks: np.ndarray,
-                                  mini: float, tickers: List[str]) -> None:
+
+    def _configure_chart_appearance(self, ax, days: int, series: Sequence[Series], mini: float) -> None:
         """Configure the chart's visual appearance."""
-        # X-axis configuration
-        plt.gca().set_xticks(oldest_timestamps[ticks])
-        plt.gca().set_xticklabels(oldest_readable_dates[ticks], rotation=45, ha="right")
-        
+        # X-axis: tick labels from the series covering the longest time span,
+        # limits wide enough to show every series in full
+        widest = max(series, key=lambda s: s.timestamps[-1] - s.timestamps[0])
+        tick_times = widest.timestamps[np.linspace(0, widest.timestamps.shape[0] - 1, TICKS_NUM).astype(int)]
+        ax.set_xticks(tick_times)
+        ax.set_xticklabels([format_timestamp(t) for t in tick_times], rotation=45, ha="right")
+        ax.set_xlim(min(s.timestamps[0] for s in series), max(s.timestamps[-1] for s in series))
+
         # Y-axis configuration
         price_ticks = np.linspace(0, 1, 11)
-        plt.gca().set_yticks(price_ticks)
-        plt.gca().set_yticklabels((price_ticks * 100).astype(int))
-        plt.gca().set_ylim(mini - 0.05, 1.05)
-        
-        # Chart limits and grid
-        plt.gca().set_xlim(oldest_timestamps[0], oldest_timestamps[-1])
-        plt.grid(linewidth=2, color="#595959", linestyle="--")
-        
-        # Legend and labels
-        plt.legend(tickers, bbox_to_anchor=(1.02, 1), loc="upper left")
-        plt.xlabel("Time")
-        plt.ylabel("Normalized Price (%)")
-        
+        ax.set_yticks(price_ticks)
+        ax.set_yticklabels((price_ticks * 100).astype(int))
+        ax.set_ylim(mini - 0.05, 1.05)
+
+        # Grid, legend and labels
+        ax.grid(linewidth=2, color="#595959", linestyle="--")
+        ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left")
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Normalized Price (%)")
+
         # Title
-        title = f"{('Last day' if days == 1 else f'{days} days')} asset price comparison"
-        plt.title(title)
-        
-        plt.tight_layout()
+        ax.set_title(f"{('Last day' if days == 1 else f'{days} days')} asset price comparison")
 
 
 # Global chart instance
-_chart_instance = None
+_chart_instance: StonksChart | None = None
 
 
 def get_chart_instance() -> StonksChart:
@@ -340,55 +451,50 @@ def get_chart_instance() -> StonksChart:
     return _chart_instance
 
 
-async def get_fig(days: Union[str, int], tickers: List[str]) -> plt.Figure:
-    """Get a figure for the specified days and tickers."""
+async def get_chart_png(days: int, tickers: Sequence[str]) -> tuple[bytes, dict[str, str]]:
+    """Create a PNG chart in a worker thread so the event loop keeps running."""
     chart = get_chart_instance()
-    return await chart.create_chart(days, tickers)
+    return await asyncio.to_thread(chart.create_png, days, tickers)
 
 
-def main(save: bool = False, format: str = 'png') -> None:
-    """Main function for command-line usage."""
+def main(argv: Sequence[str] | None = None) -> int:
+    """Command-line entry point: show a chart in a window, or save it with --save."""
+    parser = argparse.ArgumentParser(description="Normalized price comparison charts for crypto and stocks.")
+    parser.add_argument("args", nargs="*", metavar="ARG", help="[days] [ticker ...], e.g. 30 BTC ETH X:AAPL")
+    parser.add_argument("--save", action="store_true", help="save the chart to --out-dir instead of showing it")
+    parser.add_argument("--format", choices=("png", "svg"), default="png", help="image format for --save")
+    parser.add_argument("--out-dir", default="pics", help="directory for --save (default: pics)")
+    parser.add_argument("--strict", action="store_true", help="fail instead of skipping tickers without data")
+    options = parser.parse_args(argv)
+
+    load_dotenv()
+    logging.basicConfig(level=log_level_from_env(), format="%(levelname)s %(name)s: %(message)s")
+
+    figure_factory: Callable[..., Figure] = Figure
+    if not options.save:
+        import matplotlib.pyplot as plt  # only needed for the interactive window
+        figure_factory = plt.figure
+
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
-        # Determine tickers and days
-        if len(sys.argv) == 1:
-            task = get_fig("365", DEFAULT_TICKERS)
-        elif len(sys.argv) == 2:
-            task = get_fig(sys.argv[1], DEFAULT_TICKERS)
-        else:
-            task = get_fig(sys.argv[1], sys.argv[2:])
-        
-        # Generate the chart
-        fig = loop.run_until_complete(task)
-        
-        if save:
-            # Save the chart
-            args = [arg.replace(":", "-") for arg in sys.argv[1:]]
-            filename = (
-                f"pics/{COMMAND_PREFIX}"
-                + ("_" if args else "")
-                + "_".join(args)
-                + f".{format}"
-            )
-            # Create pics directory if it doesn't exist
-            os.makedirs("pics", exist_ok=True)
-            plt.savefig(filename, format=format, dpi=300, bbox_inches='tight')
-            print(f"Chart saved as {filename}")
-        else:
-            # Display the chart
-            plt.show(block=True)
-            
+        days, tickers = parse_request(options.args)
+        fig, failures = get_chart_instance().create(days, tickers, figure_factory)
     except StonksError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        sys.exit(1)
-    finally:
-        plt.close("all")
+        logger.error("%s", e)
+        return 1
+
+    if failures and options.strict:
+        logger.error("Not saving an incomplete chart, skipped %s", describe_failures(failures))
+        return 1
+
+    if options.save:
+        os.makedirs(options.out_dir, exist_ok=True)
+        filename = os.path.join(options.out_dir, chart_filename(options.args, options.format))
+        fig.savefig(filename, format=options.format, dpi=300, bbox_inches="tight")
+        logger.info("Chart saved as %s", filename)
+    else:
+        plt.show()
+    return 0
 
 
 if __name__ == "__main__":
-    main(save=False)
+    sys.exit(main())
