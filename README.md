@@ -29,5 +29,5 @@
 
 ## Documentation
 
-- [Usage Guide](USAGE.md) - Commands, local setup, configuration, and testing
-- [Deployment Guide](DEPLOYMENT.md) - Discord bot setup, Railway deployment, and troubleshooting
+- [Usage Guide](docs/USAGE.md) - Commands, local setup, configuration, and testing
+- [Deployment Guide](docs/DEPLOYMENT.md) - Discord bot setup, Railway deployment, and troubleshooting
